@@ -1,0 +1,26 @@
+{
+  "name": "scuola_BE",
+  "version": "1.0.0",
+  "description": "issue tracking for educators",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "server": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mpereannor/scuola_BE.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mpereannor/scuola_BE/issues"
+  },
+  "homepage": "https://github.com/mpereannor/scuola_BE#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.3"
+  }
+}
