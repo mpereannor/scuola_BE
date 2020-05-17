@@ -1,6 +1,6 @@
 const models = require("../models/user-models");
 
-async function register(req, res) {
+async function createUser(req, res) {
   try {
     const user = await models.create(req.body);
     res.status(201).json(user);
@@ -12,4 +12,4 @@ async function register(req, res) {
   }
 }
 
-module.exports = { register };
+module.exports = { createUser };
