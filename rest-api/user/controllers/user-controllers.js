@@ -1,15 +1,16 @@
-const userModel = require('../models/user-models')
+const models = require('../models/user-models')
 
-async function createUser (req, res) {
-    try{ 
-        const user = await userModel.insertOne(req.body)
-        res.status(201).json(user) 
-    } catch (err){
-        res.status(500).json({
-            message: 'Something went wrong, try again', 
-            err
+async function register (req, res) {
+    try { 
+        const user = await models.User.insertOne(req.body);
+        res.status(201).json(user)
+    }
+    catch(error) { 
+        res.status(500).json({ 
+            message: 'something went wrong, try again later!', error
         })
     }
-}
 
-module.exports = { createUser }
+} 
+
+module.exports = { register }
