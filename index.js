@@ -5,8 +5,8 @@ server.listen(port, () => {
   console.log("listening on port " + port);
 });
 
-process.on("UnhandledRejection", (err, promise) => {
-  console.log(`Error: ${err.message}`);
+// process.on("UnhandledRejection", (err, promise) => {
+//   console.log(`Error: ${err.message}`);
 
-  server.close(() => process.exit(1));
+//   server.close(() => process.exit(1));
 });
