@@ -13,7 +13,7 @@ async function createUser(req, res) {
 }
 
 function getUsers(req, res) { 
-const user = models.find({})
+models.find({})
 .then((user)=>{
     res.status(201).json(user)
 })
@@ -22,6 +22,7 @@ const user = models.find({})
         message: "something went wrong getting users, try again later!",
         error: error.message
     })
+})
 }
 
        
@@ -38,7 +39,6 @@ const user = models.find({})
 //     }
 
 // }
-
 async function getUser(req, res) {
     try {
         const { id } = req.params;
