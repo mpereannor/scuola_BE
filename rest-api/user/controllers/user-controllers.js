@@ -15,7 +15,11 @@ async function createUser(req, res) {
 async function getUsers(req, res) { 
     try{ 
         const user = await models.find({});
-        res.status(201).json(user);
+        if(user.length){
+            res.status(201).json(user);
+        } else{ 
+            res.status(404).json({message: 'no user'})
+        }
     } catch(error) { 
         res.status(500).json({ 
             message: "something went wrong getting users, try again later!",
