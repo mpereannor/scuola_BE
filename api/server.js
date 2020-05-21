@@ -8,7 +8,9 @@ const connectRedis = require('connect-redis');
 const { REDIS_OPTIONS } = require('../config/cache')
 const { SESSSION_OPTIONS } = require('../config/session')
 
+//routes import
 const userRoute = require("../rest-api/user/routes/user-routes");
+const authRoute = require('../rest-api/authentication/routes/auth-routes')
 
 dbConnect();
 const RedisStore = connectRedis(session);
@@ -29,8 +31,10 @@ server.use(
         store: new RedisStore({ client }),
     })
     )
-    
+
+//routes use
 server.use("/api/user", userRoute);
+server.use('/api/auth', authRoute);
 server.get("/", (req, res) => {
   res.json("scuola!!!!");
 });

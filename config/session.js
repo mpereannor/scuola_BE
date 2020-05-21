@@ -1,3 +1,7 @@
+const session = require('express-session');
+
+
+
 const { IN_PROD } = require('./keys')
 const HALF_HOUR = 1000 * 60 * 30
 const { 
@@ -18,5 +22,7 @@ const SESSION_OPTIONS = {
     resave: false,
     saveUninitialized: false
 }
+
+
 
 module.exports = { SESSION_OPTIONS }
