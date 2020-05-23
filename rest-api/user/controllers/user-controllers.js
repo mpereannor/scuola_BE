@@ -1,8 +1,8 @@
-const models = require("../models/user-models");
+const { User } = require("../models/user-models");
 
 async function createUser(req, res) {
   try {
-    const user = await models.create(req.body);
+    const user = await User.create(req.body);
     res.status(201).json(user);
   } catch (error) {
     res.status(500).json({
@@ -13,7 +13,7 @@ async function createUser(req, res) {
 }
 
 function getUsers(req, res) { 
-models.find({})
+User.find({})
 .then((user)=>{
     res.status(201).json(user)
 })
@@ -42,7 +42,7 @@ models.find({})
 async function getUser(req, res) {
     try {
         const { id } = req.params;
-        const user = await models.findById(id);
+        const user = await User.findById(id);
         res.status(201).json(user);
     } catch(error){ 
         res.status(500).json({ 
@@ -55,7 +55,7 @@ async function getUser(req, res) {
 async function updateUser(req, res) { 
     try {
         const { id } = req.params;
-        const updatedUser = await models.findByIdAndUpdate(id, req.body)
+        const updatedUser = await User.findByIdAndUpdate(id, req.body)
         res.status(201).json(updatedUser)
     } catch(error){ 
         res.status(500).json({ 
@@ -68,7 +68,7 @@ async function updateUser(req, res) {
 async function deleteUser(req, res) { 
     try{ 
         const { id } = req.params;
-        const deletedUser = await models.findByIdAndDelete(id);
+        const deletedUser = await User.findByIdAndDelete(id);
         res.status(201).json(deletedUser);
     }  catch(error){ 
         res.status(500).json({ 

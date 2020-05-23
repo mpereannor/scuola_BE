@@ -1,9 +1,6 @@
-const session = require('express-session');
-
-
-
 const { IN_PROD } = require('./keys')
-const HALF_HOUR = 1000 * 60 * 30
+const HALF_HOUR = 1000 * 60 * 30;
+
 const { 
     SESSION_SECRET = 'this is our little secret',
     SESSION_NAME = 'sid',
@@ -24,5 +21,4 @@ const SESSION_OPTIONS = {
 }
 
 
-
-module.exports = { SESSION_OPTIONS }
+module.exports = { SESSION_OPTIONS, SESSION_NAME }

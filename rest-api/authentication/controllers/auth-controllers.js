@@ -1,22 +1,30 @@
-const models = require('../../user/models/user-models');
+const { User } = require('../../user/models/user-models');
 
-const { registerSchema } = require('../validation.js/auth-validation')
+const { registerSchema } = require('../middlewares/auth-validation')
+
+const { logIn } = require('../middlewares/auth-middleware')
 
 
 async function register  (req, res) { 
     await registerSchema.validateAsync(req.body, { abortEarly: false})
 
-    const { email, name, password } = req.body
+    const { username, email, password } = req.body
     
-    const found = await models.exists({ email })
+    const found = await User.exists({ email })
 
     if(found) { 
         throw new Error('Invalid email')
     }
 
-    const user = await models.create({
-        email, name, password
+    await User.create({ 
+        username, email, password
     })
+
+    // const user = await User.create({
+    //     username, email,password
+    // })
+
+    // logIn(req, user.id)
 
 }
 
