@@ -8,9 +8,12 @@ const { logIn } = require('../middlewares/auth-middleware')
 async function register  (req, res) { 
     await registerSchema.validateAsync(req.body, { abortEarly: false})
 
+    console.log(req)
+
     const { username, email, password } = req.body
     
     const found = await User.exists({ email })
+
 
     if(found) { 
         throw new Error('Invalid email')
