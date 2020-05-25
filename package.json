@@ -28,6 +28,7 @@
     "ioredis": "^4.16.3",
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.15",
-    "nodemon": "^2.0.3"
+    "nodemon": "^2.0.3",
+    "redis-server": "^1.2.2"
   }
 }
