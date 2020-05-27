@@ -1,7 +1,9 @@
 const { SESSION_OPTIONS, SESSION_NAME } = require('../../../config/session');
 
  
+//helpers
 
+    //double negation, if undefined => converted to false, if string of ObjectId => convert to true
 const isLoggedIn = (req) => !!req.session.userId;
 
 const logIn = (req, res, userId) => { 
@@ -22,11 +24,17 @@ const logOut = (req, res) => {
     })
 }
 
-
+//middlewares
 const guest = (req, res, next) => { 
-    if (isLoggedIn(res)){ 
+    /*
+    if (isLoggedIn(req)){ 
         return next(new Error('you are already logged in'))
-
     }
+    */
+    if(isLoggedIn(req)) {
+        throw new Error('You are already logged in')
+    }
+
+    next()
 }
 module.exports = { logIn, logOut, guest };

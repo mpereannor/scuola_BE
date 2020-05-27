@@ -23,11 +23,11 @@ async function register  (req, res) {
         username, email, password
     })
 
-    // const user = await User.create({
-    //     username, email,password
-    // })
+    const user = await User.create({
+        username, email,password
+    })
 
-    // logIn(req, user.id)
+    logIn(req, user.id)
 
 }
 
