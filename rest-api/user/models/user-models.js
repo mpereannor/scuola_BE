@@ -1,7 +1,8 @@
 const { Schema, model } = require("mongoose");
 
-const { compare }  = require("bcryptjs");
+const { compare, hash }  = require("bcryptjs");
 
+const { BCRYPT_WORK_FACTOR } = require('../../../config/keys')
 
 const userSchema = new Schema(
   {
@@ -31,8 +32,13 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-//userSchema methods
+userSchema.pre('save', async function (){ 
+    if (this.isModified('password')){ 
+        this.password = await hash(this.password, BCRYPT_WORK_FACTOR)
+    }
+})
 
+//userSchema methods
 userSchema.methods.matchesPassword = function (password) { 
     return compare(password, this.password)
 }

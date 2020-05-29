@@ -2,7 +2,6 @@ const { IN_PROD } = require("./keys");
 
 const HALF_HOUR = 1000 * 60 * 30;
 const ONE_HOUR = 1000 * 60 * 60;
-const TWO_HOURS = 1000 * 60 * 60 * 2;
 
 const { 
     SESSION_SECRET = "this is our little secret",
@@ -10,6 +9,8 @@ const {
     SESSION_IDLE_TIMEOUT = HALF_HOUR
 } = process.env
 
+
+const SESSION_ABSOLUTE_TIMEOUT = ONE_HOUR * 6;
 const SESSION_OPTIONS = { 
     secret: SESSION_SECRET,
     name: SESSION_NAME,
@@ -24,4 +25,4 @@ const SESSION_OPTIONS = {
 }
 
 
-module.exports = { SESSION_OPTIONS, SESSION_NAME }
+module.exports = { SESSION_OPTIONS, SESSION_NAME, SESSION_ABSOLUTE_TIMEOUT }

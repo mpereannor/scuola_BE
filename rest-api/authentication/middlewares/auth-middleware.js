@@ -1,4 +1,4 @@
-const { SESSION_NAME } = require("../../../config/session");
+const { SESSION_NAME, SESSION_ABSOLUTE_TIMEOUT } = require("../../../config/session");
 
  
 //helpers
@@ -42,6 +42,28 @@ const authUser = (req, res, next) => {
         throw new Error( 'You must be logged in')
     }
     next()
+}
+
+
+const  active = async(req, res, next) => { 
+    try{
+        if(isLoggedIn(req)){ 
+            const now = Date.now()
+            const { createdAt } = req.session
+            
+            if( now > createdAt + SESSION_ABSOLUTE_TIMEOUT){ 
+                await logOut(req, res)
+            }
+            throw new Error("Session expired")
+        }
+        next()
+
+    }catch(error){ 
+        res.status(500).json({
+            message: 'Something went wrong try again', 
+            error
+        })
+    }
 }
 
 module.exports = { logIn, logOut, guest, authUser };
