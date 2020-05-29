@@ -1,7 +1,7 @@
 
 //custom Errors
 class BadRequest extends Error {
-    constructor (message = 'Bad Request') { 
+    constructor (message = "Bad Request") { 
         super(message)
 
         this.status = 400
@@ -9,7 +9,7 @@ class BadRequest extends Error {
 }
 
 class Unauthorized extends Error { 
-    constructor(message = 'Unauthorized') { 
+    constructor(message = "Unauthorized") { 
         super(message)
 
         this.status = 401

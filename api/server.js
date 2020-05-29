@@ -5,17 +5,17 @@ const server = express();
 
 const dbConnect = require("../config/connection");
 
-const Redis = require('ioredis');
-const connectRedis = require('connect-redis');
+const Redis = require("ioredis");
+const connectRedis = require("connect-redis");
 
-const session = require('express-session');
+const session = require("express-session");
 
-const { REDIS_OPTIONS } = require('../config/cache')
-const { SESSION_OPTIONS } = require('../config/session')
+const { REDIS_OPTIONS } = require("../config/cache")
+const { SESSION_OPTIONS } = require("../config/session")
 
 //routes import
 const userRoute = require("../rest-api/user/routes/user-routes");
-const authRoute = require('../rest-api/authentication/routes/auth-routes')
+const authRoute = require("../rest-api/authentication/routes/auth-routes")
 
 dbConnect();
 const RedisStore = connectRedis(session);
@@ -31,7 +31,7 @@ server.use(
 
 //routes use
 server.use("/api/user", userRoute);
-server.use('/api/auth', authRoute);
+server.use("/api/auth", authRoute);
 server.get("/", (req, res) => {
   res.json("scuola!!!!");
 });

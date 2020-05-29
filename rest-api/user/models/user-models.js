@@ -1,5 +1,7 @@
 const { Schema, model } = require("mongoose");
 
+const { compare }  = require("bcryptjs");
+
 
 const userSchema = new Schema(
   {
@@ -29,6 +31,11 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
+//userSchema methods
+
+userSchema.methods.matchesPassword = function (password) { 
+    return compare(password, this.password)
+}
 
 const profileSchema  = new Schema({ 
     photoUrl: { 
@@ -45,7 +52,7 @@ const profileSchema  = new Schema({
     }
 })
 
-const Profile = model('Profile', profileSchema)
-const User = model('User', userSchema)
+const Profile = model("Profile", profileSchema)
+const User = model("User", userSchema)
 
 module.exports ={ User, Profile }

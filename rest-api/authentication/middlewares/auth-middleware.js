@@ -1,4 +1,4 @@
-const { SESSION_OPTIONS, SESSION_NAME } = require('../../../config/session');
+const { SESSION_OPTIONS, SESSION_NAME } = require("../../../config/session");
 
  
 //helpers
@@ -6,7 +6,7 @@ const { SESSION_OPTIONS, SESSION_NAME } = require('../../../config/session');
     //double negation, if undefined => converted to false, if string of ObjectId => convert to true
 const isLoggedIn = (req) => !!req.session.userId;
 
-const logIn = (req, res, userId) => { 
+const logIn = (req, userId) => { 
     new Promise((resolve, reject) => {
         req.session.userId = userId
         req.session.createdAt = Date.now()
@@ -18,7 +18,6 @@ const logOut = (req, res) => {
         req.session.destroy((err) => {
             if(err) reject(err)
             res.clearCookie(SESSION_NAME)
-            
             resolve()
         })
     })
@@ -28,11 +27,11 @@ const logOut = (req, res) => {
 const guest = (req, res, next) => { 
     /*
     if (isLoggedIn(req)){ 
-        return next(new Error('you are already logged in'))
+        return next(new Error("you are already logged in"))
     }
     */
     if(isLoggedIn(req)) {
-        throw new Error('You are already logged in')
+        throw new Error("You are already logged in")
     }
 
     next()

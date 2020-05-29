@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 /*
 const { 
-    MONGO_USERNAME = 'STH',
-    MONGO_PASSWORD = 'STH',
-    MONGO_HOST = 'STH',
-    MONGO_PORT = 'STH', 
-    MONGO_DATABASE= 'STH'
+    MONGO_USERNAME = "STH",
+    MONGO_PASSWORD = "STH",
+    MONGO_HOST = "STH",
+    MONGO_PORT = "STH", 
+    MONGO_DATABASE= "STH"
 
 } = process.env
 */

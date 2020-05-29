@@ -1,11 +1,24 @@
-const Joi = require('@hapi/joi');
+const Joi = require("@hapi/joi");
+
+// const id = Joi.ObjectId().required();
+const username = Joi.string().min(3).max(128).trim().required();
+const fullname = Joi.string().min(3).max(128).trim().required();
+const email = Joi.string().email().min(8).max(254).lowercase().trim().required();
+const password = Joi.string().min(8).max(128).required();
+const passwordConfirmation = Joi.valid(Joi.ref("password")).required();
+
 
 const registerSchema = Joi.object({ 
-    username: Joi.string().min(3).max(128).trim().required(),
-    fullname: Joi.string().min(3).max(128).trim().required(),
-    email: Joi.string().email().min(8).max(254).lowercase().trim().required(),
-    password: Joi.string().min(8).max(128).required(),
-    passwordConfirmation: Joi.valid(Joi.ref('password')).required(),
+    username, 
+    fullname,
+    email,
+    password,
+    passwordConfirmation
 })
 
-module.exports = { registerSchema }
+const loginSchema =  Joi.object({ 
+    email, 
+    password
+})
+
+module.exports = { registerSchema, loginSchema }

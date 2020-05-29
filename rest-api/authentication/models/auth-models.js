@@ -1,10 +1,10 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
 const passwordResetSchema = new Schema(
     { 
         userId: { 
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: "User"
     },
     token: String,
     expiredAt: Date
@@ -13,6 +13,6 @@ const passwordResetSchema = new Schema(
     }
 )
 
-const PasswordReset = model('PasswordReset', passwordResetSchema)
+const PasswordReset = model("PasswordReset", passwordResetSchema)
 
 module.exports = { PasswordReset }

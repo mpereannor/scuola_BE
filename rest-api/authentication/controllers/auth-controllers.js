@@ -1,8 +1,9 @@
-const { User } = require('../../user/models/user-models');
+const { User } = require("../../user/models/user-models");
 
-const { registerSchema } = require('../middlewares/auth-validation')
+const { registerSchema, loginSchema } = require("../middlewares/auth-validation")
 
-const { logIn } = require('../middlewares/auth-middleware')
+
+const { logIn } = require("../middlewares/auth-middleware")
 
 
 
@@ -11,16 +12,14 @@ async function register  (req, res) {
     
     try {
         await registerSchema.validateAsync(req.body, { abortEarly: false})
-        
-        console.log(req)
-        
+                
         const { username, fullname, email, password } = req.body
         
         const found = await User.exists({ email })
         
         
         if(found) { 
-            throw new Error('Invalid email')
+            throw new Error("Invalid email")
         }
         
         const user = await User.create({
@@ -34,11 +33,46 @@ async function register  (req, res) {
     logIn(req, user.id)
 }catch(error) { 
     res.status(500).json({ 
-        message: 'Something went wrong try again', 
+        message: "Something went wrong try again", 
         error
     })
 }
 }
 
+async function login(req, res) { 
+    try{ 
+        await loginSchema.validateAsync(req.body, { 
+            abortEarly: false
+        }) 
+        
+        const { email, password } = req.body;
 
-module.exports = { register }
+        // const user = await User.findOne({ email })
+
+        const user = await User.findOne({ email })
+
+        // if (!user || !(await user.matchesPassword(password))) { 
+        //     throw new Error(" Email or Password is Incorrect")
+        // }
+        if ( user.length < 0) { 
+            throw new Error('user not found')
+        }
+
+        if (!(user.matchesPassword)){ 
+            throw new Error('password not matching')
+        }
+
+        logIn(req, user.id)
+
+        res.status(201).json(user)
+
+    } catch(error) { 
+        res.status(500).json({ 
+            message: "Something went wrong try again", 
+            error
+        })
+    }
+}
+
+
+module.exports = { register, login }
