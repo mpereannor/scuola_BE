@@ -1,4 +1,4 @@
-const { SESSION_OPTIONS, SESSION_NAME } = require("../../../config/session");
+const { SESSION_NAME } = require("../../../config/session");
 
  
 //helpers
@@ -36,4 +36,12 @@ const guest = (req, res, next) => {
 
     next()
 }
-module.exports = { logIn, logOut, guest };
+
+const authUser = (req, res, next) => { 
+    if (!isLoggedIn(req)){ 
+        throw new Error( 'You must be logged in')
+    }
+    next()
+}
+
+module.exports = { logIn, logOut, guest, authUser };

@@ -3,7 +3,7 @@ const { User } = require("../../user/models/user-models");
 const { registerSchema, loginSchema } = require("../middlewares/auth-validation")
 
 
-const { logIn } = require("../middlewares/auth-middleware")
+const { logIn, logOut } = require("../middlewares/auth-middleware")
 
 
 
@@ -74,5 +74,16 @@ async function login(req, res) {
     }
 }
 
+async function logout(req, res) { 
+    try{
+        await logOut(req, res) 
+        res.status(201).json('successfully logged out')
+    }catch(error){
+        res.status(500).json({ 
+            message: 'Something went wrong try again', error
+        }) 
 
-module.exports = { register, login }
+    }
+}
+
+module.exports = { register, login, logout }
