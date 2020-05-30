@@ -86,4 +86,15 @@ async function logout(req, res) {
     }
 }
 
-module.exports = { register, login, logout }
+async function home(req, res) { 
+    try{ 
+        const user = await User.findbyId(req.session.userId)
+        res.status(201).json(user)
+    }catch(error){ 
+        res.status(500).json({ 
+            message: 'Something went wrong try again', error
+        })
+    }
+}
+
+module.exports = { register, login, logout, home }

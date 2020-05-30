@@ -44,7 +44,7 @@ const authUser = (req, res, next) => {
     next()
 }
 
-
+/*
 const  active = async(req, res, next) => { 
     try{
         if(isLoggedIn(req)){ 
@@ -65,5 +65,6 @@ const  active = async(req, res, next) => {
         })
     }
 }
+*/
 
 module.exports = { logIn, logOut, guest, authUser };
