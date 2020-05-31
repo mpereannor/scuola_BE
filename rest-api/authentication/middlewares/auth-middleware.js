@@ -1,48 +1,41 @@
-const { SESSION_NAME, SESSION_ABSOLUTE_TIMEOUT } = require("../../../config/session");
+const { SESSION_NAME } = require("../../../config/session");
+const { BadRequest, Unauthorized } = require("../middlewares/auth-errors");
 
- 
 //helpers
-
-    //double negation, if undefined => converted to false, if string of ObjectId => convert to true
 const isLoggedIn = (req) => !!req.session.userId;
 
-const logIn = (req, userId) => { 
-    new Promise((resolve, reject) => {
-        req.session.userId = userId
-        req.session.createdAt = Date.now()
-    })
-}
+const logIn = (req, userId) => {
+  new Promise((resolve, reject) => {
+    req.session.userId = userId;
+    req.session.createdAt = Date.now();
+  });
+};
 
-const logOut = (req, res) => { 
-    new Promise((resolve, reject) => { 
-        req.session.destroy((err) => {
-            if(err) reject(err)
-            res.clearCookie(SESSION_NAME)
-            resolve()
-        })
-    })
-}
+const logOut = (req, res) => {
+  new Promise((resolve, reject) => {
+    req.session.destroy((err) => {
+      if (err) reject(err);
+      res.clearCookie(SESSION_NAME);
+      resolve();
+    });
+  });
+};
 
 //middlewares
-const guest = (req, res, next) => { 
-    /*
-    if (isLoggedIn(req)){ 
-        return next(new Error("you are already logged in"))
-    }
-    */
-    if(isLoggedIn(req)) {
-        throw new Error("You are already logged in")
-    }
+const guest = (req, res, next) => {
+  if (isLoggedIn(req)) {
+    throw new BadRequest("You are already logged in");
+  }
 
-    next()
-}
+  next();
+};
 
-const authUser = (req, res, next) => { 
-    if (!isLoggedIn(req)){ 
-        throw new Error( 'You must be logged in')
-    }
-    next()
-}
+const authUser = (req, res, next) => {
+  if (!isLoggedIn(req)) {
+    throw new Unauthorized("You must be logged in");
+  }
+  next();
+};
 
 /*
 const  active = async(req, res, next) => { 
@@ -54,7 +47,7 @@ const  active = async(req, res, next) => {
             if( now > createdAt + SESSION_ABSOLUTE_TIMEOUT){ 
                 await logOut(req, res)
             }
-            throw new Error("Session expired")
+            throw new Unauthorized("Session expired")
         }
         next()
 

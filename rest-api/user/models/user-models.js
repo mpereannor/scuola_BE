@@ -1,8 +1,8 @@
 const { Schema, model } = require("mongoose");
 
-const { compare, hash }  = require("bcryptjs");
+const { compare, hash } = require("bcryptjs");
 
-const { BCRYPT_WORK_FACTOR } = require('../../../config/keys')
+const { BCRYPT_WORK_FACTOR } = require("../../../config/keys");
 
 const userSchema = new Schema(
   {
@@ -32,33 +32,33 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-userSchema.pre('save', async function (){ 
-    if (this.isModified('password')){ 
-        this.password = await hash(this.password, BCRYPT_WORK_FACTOR)
-    }
-})
+userSchema.pre("save", async function () {
+  if (this.isModified("password")) {
+    this.password = await hash(this.password, BCRYPT_WORK_FACTOR);
+  }
+});
 
 //userSchema methods
-userSchema.methods.matchesPassword = function (password) { 
-    return compare(password, this.password)
-}
+userSchema.methods.matchesPassword = function (password) {
+  return compare(password, this.password);
+};
 
-const profileSchema  = new Schema({ 
-    photoUrl: { 
-        type: String,
-    }, 
-    location: { 
-        type: String,
-    },
-    age: { 
-        type: String
-    },
-    bio: { 
-        type: String
-    }
-})
+const profileSchema = new Schema({
+  photoUrl: {
+    type: String,
+  },
+  location: {
+    type: String,
+  },
+  age: {
+    type: String,
+  },
+  bio: {
+    type: String,
+  },
+});
 
-const Profile = model("Profile", profileSchema)
-const User = model("User", userSchema)
+const Profile = model("Profile", profileSchema);
+const User = model("User", userSchema);
 
-module.exports ={ User, Profile }
+module.exports = { User, Profile };
