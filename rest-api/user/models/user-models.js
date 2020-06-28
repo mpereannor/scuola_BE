@@ -24,10 +24,10 @@ const userSchema = new Schema(
     password: {
       type: String,
     },
-    // position: {
-    //   type: String,
-    //   required: true,
-    // },
+    position: {
+      type: String,
+      default: 'guest',
+    }
   },
   { timestamps: true }
 );

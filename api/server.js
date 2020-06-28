@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
+const cors = require('cors');
 const server = express();
 
 const dbConnect = require("../config/db");
@@ -28,10 +29,11 @@ server.use(
     store: new RedisStore({ client }),
   })
 );
-
+server.use(cors());
 //routes use
 server.use("/api/user", userRoute);
 server.use("/api/auth", authRoute);
+
 server.get("/", (req, res) => {
   res.json("scuola!!!!");
 });

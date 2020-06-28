@@ -8,6 +8,8 @@ const {
 const { logIn, logOut } = require("../middlewares/auth-middleware");
 const { BadRequest } = require("../../authentication/middlewares/auth-errors");
 
+const ObjectId = require('mongoose').Types.ObjectId;
+
 async function register(req, res) {
   try {
     await registerSchema.validateAsync(req.body, { abortEarly: false });
@@ -81,7 +83,7 @@ async function logout(req, res) {
 
 async function home(req, res) {
   try {
-    const user = await User.findbyId(req.session.userId);
+    const user = await User.findById(req.session.userId);
     res.status(201).json(user);
   } catch (error) {
     res.status(500).json({
@@ -91,4 +93,24 @@ async function home(req, res) {
   }
 }
 
-module.exports = { register, login, logout, home };
+async function updatePosition(req, res) { 
+    const options = ['guest', 'admin', 'student', 'tutor'];
+
+    const { id } = req.params;
+    
+    try{
+        const { position } = req.body;
+        if (options.includes(position) === false){
+            throw new BadRequest('Incorrect position')
+        }
+        const updatedPosition = await User.findOneAndUpdate({_id: ObjectId(id)},{$set:{position: position}},
+        {new: true})
+    res.status(201).json(updatedPosition);
+    }catch (error) {
+        res.status(500).json({
+          message: "Something went wrong try again",
+          error,
+        });
+      }
+}
+module.exports = { register, login, logout, home, updatePosition };
