@@ -2,13 +2,12 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require('cors');
-const server = express();
 
+const server = express();
 const dbConnect = require("../config/db");
 
 const Redis = require("ioredis");
 const connectRedis = require("connect-redis");
-
 const session = require("express-session");
 
 const { REDIS_OPTIONS } = require("../config/cache");
@@ -22,14 +21,17 @@ dbConnect();
 const RedisStore = connectRedis(session);
 const client = new Redis(REDIS_OPTIONS);
 
-server.use(express.json());
 server.use(
   session({
     ...SESSION_OPTIONS,
     store: new RedisStore({ client }),
   })
 );
-server.use(cors());
+server.use(express.json());
+server.use(cors({
+    //  credential: true, origin: 'http://localhost:3000'
+    
+    }));
 //routes use
 server.use("/api/user", userRoute);
 server.use("/api/auth", authRoute);

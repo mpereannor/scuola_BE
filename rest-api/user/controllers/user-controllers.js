@@ -75,4 +75,6 @@ async function deleteUser(req, res) {
     });
   }
 }
+
+
 module.exports = { createUser, getUsers, getUser, updateUser, deleteUser };

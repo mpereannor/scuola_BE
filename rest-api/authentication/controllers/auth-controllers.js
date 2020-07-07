@@ -113,4 +113,6 @@ async function updatePosition(req, res) {
         });
       }
 }
-module.exports = { register, login, logout, home, updatePosition };
+
+
+ module.exports = { register, login, logout, home, updatePosition };

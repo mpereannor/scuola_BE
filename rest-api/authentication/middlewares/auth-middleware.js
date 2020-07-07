@@ -37,27 +37,14 @@ const authUser = (req, res, next) => {
   next();
 };
 
-/*
-const  active = async(req, res, next) => { 
-    try{
-        if(isLoggedIn(req)){ 
-            const now = Date.now()
-            const { createdAt } = req.session
-            
-            if( now > createdAt + SESSION_ABSOLUTE_TIMEOUT){ 
-                await logOut(req, res)
-            }
-            throw new Unauthorized("Session expired")
-        }
-        next()
-
-    }catch(error){ 
-        res.status(500).json({
-            message: 'Something went wrong try again', 
-            error
-        })
+const cookieChecker = (req, res, next) => { 
+    if(typeof req.cookies['connect.sid'] !== 'undefined') { 
+        console.log(req.cookies['connect.sid'])
+    } else {
+        throw new BadRequest('could not find cookie!')
     }
-}
-*/
+    next();
+};
 
-module.exports = { logIn, logOut, guest, authUser };
+
+module.exports = { logIn, logOut, guest, authUser, cookieChecker };

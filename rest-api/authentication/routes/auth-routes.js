@@ -5,7 +5,8 @@ const {
   login,
   logout,
   home,
-  updatePosition
+  updatePosition,
+  
 } = require("../controllers/auth-controllers");
 
 router.post("/register", guest, register);

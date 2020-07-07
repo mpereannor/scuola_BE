@@ -9,6 +9,7 @@ const {
 
 } = process.env
 */
+mongoose.set('useCreateIndex', true);
 
 const dbConnect = async () => {
   const connection = await mongoose.connect(process.env.MONGO_URI, {
