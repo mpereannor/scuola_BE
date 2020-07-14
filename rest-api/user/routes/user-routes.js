@@ -7,7 +7,7 @@ const {
   deleteUser,
 } = require("../controllers/user-controllers");
 
-const { isLoggedIn, authUser } = require('../../authentication/middlewares/auth-middleware')
+const { authUser } = require('../../authentication/middlewares/auth-middleware')
 router.post("/", createUser);
 router.get("/", authUser, getUsers);
 router.get("/:id", getUser);

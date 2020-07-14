@@ -10,7 +10,7 @@ const userSchema = new Schema(
       type: String,
       lowercase: true,
       required: true,
-      unique: true,
+      unique: true
     },
     fullname: {
       type: String,
@@ -19,14 +19,14 @@ const userSchema = new Schema(
       type: String,
       lowercase: true,
       required: true,
-      unique: true,
+      unique: true
     },
     password: {
-      type: String,
+      type: String
     },
     position: {
       type: String,
-      default: 'guest',
+      default: 'guest'
     }
   },
   { timestamps: true }
@@ -43,22 +43,6 @@ userSchema.methods.matchesPassword = function (password) {
   return compare(password, this.password);
 };
 
-const profileSchema = new Schema({
-  photoUrl: {
-    type: String,
-  },
-  location: {
-    type: String,
-  },
-  age: {
-    type: String,
-  },
-  bio: {
-    type: String,
-  },
-});
-
-const Profile = model("Profile", profileSchema);
 const User = model("User", userSchema);
 
-module.exports = { User, Profile };
+module.exports = { User };

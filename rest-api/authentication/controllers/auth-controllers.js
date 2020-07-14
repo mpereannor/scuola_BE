@@ -31,7 +31,7 @@ async function register(req, res) {
 
     res.status(201).json(user);
 
-    logIn(req, user.id);
+    // logIn(req, user.id);
   } catch (error) {
     res.status(500).json({
       message: "Something went wrong try again",

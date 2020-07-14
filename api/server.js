@@ -16,6 +16,7 @@ const { SESSION_OPTIONS } = require("../config/session");
 //routes import
 const userRoute = require("../rest-api/user/routes/user-routes");
 const authRoute = require("../rest-api/authentication/routes/auth-routes");
+const profileRoute = require('../rest-api/profile/routes/profile-routes')
 
 dbConnect();
 const RedisStore = connectRedis(session);
@@ -29,12 +30,18 @@ server.use(
 );
 server.use(express.json());
 server.use(cors({
-    //  credential: true, origin: 'http://localhost:3000'
+     credentials: true,
+     origin: 'http://localhost:3000',
+     'Access-Control-Allow-Headers': true,
+     'Access-Control-Allow-Credentials': true,
     
     }));
+server.set('trust proxy', 1)
+
 //routes use
 server.use("/api/user", userRoute);
 server.use("/api/auth", authRoute);
+server.use('/api/profile', profileRoute)
 
 server.get("/", (req, res) => {
   res.json("scuola!!!!");

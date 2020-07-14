@@ -1,4 +1,4 @@
-const { IN_PROD } = require("./keys");
+const { IN_PROD, TESTING } = require("./keys");
 
 const HALF_HOUR = 1000 * 60 * 30;
 const ONE_HOUR = 1000 * 60 * 60;
@@ -14,9 +14,12 @@ const SESSION_OPTIONS = {
   secret: SESSION_SECRET,
   name: SESSION_NAME,
   cookie: {
+    httpOnly: false,
     maxAge: SESSION_IDLE_TIMEOUT,
-    secure: IN_PROD,
-    sameSite: true,
+    // secure: IN_PROD,
+    secure: false,
+    // sameSite: true,
+    sameSite: false
   },
   rolling: true,
   resave: false,
