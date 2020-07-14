@@ -16,7 +16,11 @@ const profileSchema = new Schema({
   bio: {
     type: String
   },
-});
+  
+},
+{ timestamps: true }
+
+);
 
 const maleImage = 'https://i.ibb.co/gSbgf9K/male-placeholder.jpg';
 const femaleImage= 'https://i.ibb.co/dKx0vDS/woman-placeholder.jpg'
