@@ -26,6 +26,7 @@ const userSchema = new Schema(
     },
     position: {
       type: String,
+      enum: ['guest', 'admin', 'tutor', 'student'],
       default: 'guest'
     }
   },

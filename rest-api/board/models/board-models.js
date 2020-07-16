@@ -1,8 +1,6 @@
-const mongoose = require('mongoose');
-// const Schema = mongoose.Schema;
-// const model = mongoose.model;
-
+const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
+
 const boardSchema = new Schema(
   {
     name: {
@@ -21,6 +19,7 @@ const boardSchema = new Schema(
     ],
     board_type: {
       type: String,
+      enum: ['public', 'private'],
       default: "public",
     },
     groups: [
@@ -123,9 +122,9 @@ const reportSchema = new Schema(
         type: Number,
       },
     },
-    updates: { 
-        type: String
-    }
+    updates: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

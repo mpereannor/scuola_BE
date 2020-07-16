@@ -35,8 +35,9 @@ function getUsers(req, res) {
 //             error: error.message
 //         })
 //     }
-
 // }
+
+
 async function getUser(req, res) {
   try {
     const { id } = req.params;

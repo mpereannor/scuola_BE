@@ -40,10 +40,10 @@ server.use(cors({
 server.set('trust proxy', 1)
 
 //routes use
-server.use("/api/user", userRoute);
+server.use("/api/users", userRoute);
 server.use("/api/auth", authRoute);
 server.use('/api/profile', profileRoute);
-server.use('/api/board', boardRoute);
+server.use('/api/boards', boardRoute);
 
 server.get("/", (req, res) => {
   res.json("scuola!!!!");
