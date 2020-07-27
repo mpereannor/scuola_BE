@@ -34,6 +34,7 @@
     "mongodb": "^3.5.7",
     "mongoose": "^5.9.15",
     "nodemon": "^2.0.3",
-    "redis-server": "^1.2.2"
+    "redis-server": "^1.2.2",
+    "validator": "^13.1.1"
   }
 }

@@ -1,44 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
-const boardSchema = new Schema(
-  {
-    name: {
-      type: String,
-      default: "Dashboard",
-      required: true,
-    },
-    description: {
-      type: String,
-    },
-    columns: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Column",
-      },
-    ],
-    board_type: {
-      type: String,
-      enum: ['public', 'private'],
-      default: "public",
-    },
-    groups: [
-      {
-        type: String,
-      },
-    ],
-    report: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Report",
-    },
-    user_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-  },
-  { timestamps: true }
-);
-
 const columnSchema = new Schema(
   {
     issue: {
@@ -173,10 +135,61 @@ const tagSchema = new Schema(
   { timestamps: true }
 );
 
+
+const groupSchema = new Schema({
+    title: {
+      type: String,
+    },
+    report : [reportSchema],
+    columns : [columnSchema]
+  //   column_id: {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "Column",
+  //   },
+  },
+  { timestamps: true });
+
+const boardSchema = new Schema(
+    {
+      name: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      description: {
+        type: String,
+        trim: true,
+      },
+  
+      board_type: {
+        type: String,
+        enum: ["public", "private"],
+        default: "public",
+      },
+      groups: [groupSchema],
+      // groups: [
+      //   {
+      //     type: mongoose.Schema.Types.ObjectId,
+      //     ref: "Group",
+      //   },
+      // ],
+      // report: {
+      //   type: mongoose.Schema.Types.ObjectId,
+      //   ref: "Report",
+      // },
+      user_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    },
+    { timestamps: true }
+  );
+
 const Board = model("Board", boardSchema);
+const Group = model("Group", groupSchema);
 const Column = model("Column", columnSchema);
 const Report = model("Report", reportSchema);
 const Issue = model("Issue", issueSchema);
 const Tag = model("Tag", tagSchema);
 
-module.exports = { Board, Column, Report, Issue, Tag };
+module.exports = { Board, Group, Column, Report, Issue, Tag };

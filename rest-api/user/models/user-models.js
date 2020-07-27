@@ -1,7 +1,6 @@
 const { Schema, model } = require("mongoose");
-
 const { compare, hash } = require("bcryptjs");
-
+const validator = require('validator')
 const { BCRYPT_WORK_FACTOR } = require("../../../config/keys");
 
 const userSchema = new Schema(
@@ -10,7 +9,8 @@ const userSchema = new Schema(
       type: String,
       lowercase: true,
       required: true,
-      unique: true
+      unique: true,
+      trim: true
     },
     fullname: {
       type: String,
@@ -19,10 +19,24 @@ const userSchema = new Schema(
       type: String,
       lowercase: true,
       required: true,
-      unique: true
+      unique: true,
+      validate(value){ 
+          if (!validator.isEmail(value)){ 
+              throw new Error('Email is invalid')
+          }
+      },
+      trim: true
     },
     password: {
-      type: String
+      type: String,
+      required: true,
+      minlength: 8,
+      trim: true,
+      validate(value){ 
+          if(!value.toLowercase.includes('password')){ 
+              throw new Error('Password cannot contain "password"')
+          }
+      }
     },
     position: {
       type: String,
