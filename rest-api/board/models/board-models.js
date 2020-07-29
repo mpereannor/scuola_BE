@@ -1,95 +1,6 @@
+
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
-
-// const columnSchema = new Schema(
-//   {
-//     issue: {
-//       type: String,
-//     },
-//     reporter: {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: "User",
-//       default: true,
-//     },
-//     source: {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: "Report",
-//       default: true,
-//     },
-//     status: {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: "Issue",
-//       default: true,
-//     },
-//     severity: {
-//       type: mongoose.Schema.ObjectId,
-//       ref: "Issue",
-//     },
-//     date: {
-//       type: Date,
-//     },
-//     duration: {
-//       type: String,
-//     },
-//     timeline: {
-//       type: String,
-//     },
-//     date_submission: {
-//       type: Date,
-//     },
-//     assigned_user: {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: "User",
-//       default: "admin",
-//     },
-//     estimated_cost: {
-//       type: Number,
-//     },
-//     resolved: {
-//       type: Boolean,
-//       default: false,
-//     },
-//     tag: [
-//       {
-//         type: mongoose.Schema.Types.ObjectId,
-//         ref: "Tag",
-//       },
-//     ],
-//   },
-//   { timestamps: true }
-// );
-
-const reportSchema = new Schema(
-  {
-    reporters: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-    headline: {
-      type: String,
-      required: true,
-    },
-    report_finding: {
-      asset: [
-        {
-          type: String,
-        },
-      ],
-      status: {
-        type: String,
-      },
-      severity: {
-        type: Number,
-      },
-    },
-    updates: {
-      type: String,
-    },
-  },
-  { timestamps: true }
-);
 
 const issueSchema = new Schema(
   {
@@ -118,7 +29,6 @@ const issueSchema = new Schema(
     assigned_user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-    //   default: "admin",
     },
     estimated_cost: {
       type: Number,
@@ -142,23 +52,10 @@ const issueSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Report",
     },
-    reporter: {
+    reporters: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-    },
-    // issue_aspect: {
-    //   title: [
-    //     {
-    //       type: String,
-    //     },
-    //   ],
-    //   label: {
-    //     type: String,
-    //   },
-    //   description: {
-    //     type: String,
-    //   },
-    // },
+    }],
   },
   { timestamps: true }
 );
@@ -181,12 +78,6 @@ const groupSchema = new Schema(
       type: String,
     },
     issue: [issueSchema],
-    // report: [reportSchema],
-    // columns: [columnSchema],
-    //   column_id: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "Column",
-    //   },
   },
   { timestamps: true }
 );
@@ -209,16 +100,6 @@ const boardSchema = new Schema(
       default: "public",
     },
     groups: [groupSchema],
-    // groups: [
-    //   {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "Group",
-    //   },
-    // ],
-    // report: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "Report",
-    // },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -230,8 +111,7 @@ const boardSchema = new Schema(
 const Board = model("Board", boardSchema);
 const Group = model("Group", groupSchema);
 const Issue = model("Issue", issueSchema);
-const Report = model("Report", reportSchema);
 const Tag = model("Tag", tagSchema);
 
-module.exports = { Board, Group, Report, Issue, Tag };
+module.exports = { Board, Group, Issue, Tag };
 
