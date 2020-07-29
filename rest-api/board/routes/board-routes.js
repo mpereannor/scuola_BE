@@ -43,10 +43,5 @@ router.patch('/:id/groups/:group_id/issues/:issue_id', updateIssueInGroup);
 router.delete('/:id/groups/:group_id/issues/:issue_id', closeIssueInGroup);
 
 
-// //report
-// router.post("/:id/groups/:group_id/report", createReport);
-// router.get('/:id/groups/:group_id/report', getReport);
-// router.update('/:id/groups/:group_id/report', updateReport);
-// router.delete('/:id/groups/:group_id/report', closeReport);
 
 module.exports = router;

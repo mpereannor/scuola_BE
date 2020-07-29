@@ -100,6 +100,12 @@ const boardSchema = new Schema(
       default: "public",
     },
     groups: [groupSchema],
+    reports: [
+        { 
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Report'
+        }
+    ],
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

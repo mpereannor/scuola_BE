@@ -24,8 +24,8 @@ async function getBoards(req, res) {
 }
 
 async function getBoard(req, res) {
-  try {
     const { id } = req.params;
+  try {
     const board = await Board.findById(id);
     res.status(200).json(board);
   } catch (error) {
