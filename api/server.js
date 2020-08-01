@@ -16,7 +16,7 @@ const { SESSION_OPTIONS } = require("../config/session");
 //routes import
 const userRoute = require("../rest-api/user/routes/user-routes");
 const authRoute = require("../rest-api/authentication/routes/auth-routes");
-const profileRoute = require('../rest-api/profile/routes/profile-routes');
+// const profileRoute = require('../rest-api/profile/routes/profile-routes');
 const boardRoute = require('../rest-api/board/routes/board-routes');
 const reportRoute = require('../rest-api/report/routes/report-routes');
 
@@ -44,7 +44,7 @@ server.set('trust proxy', 1)
 //routes use
 server.use("/api/users", userRoute);
 server.use("/api/auth", authRoute);
-server.use('/api/profile', profileRoute);
+// server.use('/api/profile', profileRoute);
 server.use('/api/boards', boardRoute);
 server.use('/api/reports', reportRoute);
 

@@ -1,4 +1,4 @@
-const { User } = require("../models/user-models");
+const { User, Profile } = require("../models/user-models");
 
 async function createUser(req, res) {
   try {
@@ -24,19 +24,6 @@ function getUsers(req, res) {
       });
     });
 }
-
-// async function getUsers(req, res) {
-//     try{
-//         const user = await models.find({});
-//         res.status(201).json(user);
-//     } catch(error) {
-//         res.status(500).json({
-//             message: "something went wrong getting users, try again later!",
-//             error: error.message
-//         })
-//     }
-// }
-
 
 async function getUser(req, res) {
   try {
@@ -78,4 +65,23 @@ async function deleteUser(req, res) {
 }
 
 
-module.exports = { createUser, getUsers, getUser, updateUser, deleteUser };
+async function createUserProfile(req, res) { 
+    try {
+        const { id } = req.params;
+        const  profile = req.body;
+        const userProfile = await Profile.create(profile);const user = await User.findById(id);
+        user.profile = userProfile._id;
+        res.status(201).json(user);  
+    } 
+    catch (error) {
+        res.status(500).json({
+            message: "something went wrong creating user profile, try again later!",
+          });
+    }
+}
+
+
+module.exports = { createUser, getUsers, getUser, updateUser, deleteUser, createUserProfile };
+
+
+

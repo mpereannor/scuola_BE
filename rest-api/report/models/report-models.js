@@ -17,7 +17,6 @@ const reportSchema = new Schema(
       asset: [
         {
           type: String,
-          //sourceDocuments
         },
       ],
       note: {
@@ -34,7 +33,13 @@ const reportSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Update'
     }],
+      tags: [{ 
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Tag'
+        },
+    ], 
   },
+
   { timestamps: true }
 );
 
@@ -50,6 +55,9 @@ const updateSchema = new Schema({
     downvote: { 
         type: Number,
         default: 0
+    },
+    user: { 
+        type: mongoose.Schema.Types.ObjectId, ref: 'User'
     }
 },
 { timestamps: true})

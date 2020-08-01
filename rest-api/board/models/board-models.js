@@ -68,6 +68,19 @@ const tagSchema = new Schema(
     color: {
       type: String,
     },
+    // reports: [
+    //     { 
+    //         type: mongoose.Schema.Types.ObjectId,
+    //         ref: 'Report'
+    //     }
+    // ],
+    // issues: [
+    //     { 
+    //         type: mongoose.Schema.Types.ObjectId,
+    //         ref: 'Issue'
+    //     }
+    // ],
+
   },
   { timestamps: true }
 );

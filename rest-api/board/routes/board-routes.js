@@ -34,7 +34,6 @@ router.get("/:id/groups/:group_id", getGroupInBoard);
 router.patch("/:id/groups/:group_id", updateGroupInBoard);
 router.delete("/:id/groups/:group_id", archiveGroupInBoard);
 
-
 //issue
 router.post('/:id/groups/:group_id/issues', submitIssue);
 router.get('/:id/groups/:group_id/issues', getIssuesInGroup);
