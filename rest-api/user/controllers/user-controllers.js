@@ -80,7 +80,8 @@ async function createUserProfile(req, res) {
     try {
         const { id } = req.params;
         const  profile = req.body;
-        const userProfile = await Profile.create(profile);const user = await User.findById(id);
+        const userProfile = await Profile.create(profile);
+        const user = await User.findById(id);
         user.profile = userProfile._id;
         await user.save()
         res.status(201).json(user);  
@@ -106,21 +107,25 @@ async function getUserProfile(req, res) {
     }
 }
 
-async function updateUserProfile(req, res) { 
-    try{ 
-        const { id } = req.params;
-        const profile = req.body;
-        const updatedUserProfile = await User.findByIdAndUpdate(id,profile);
-        await updatedUserProfile.save();
-        res.status(201).json(updatedUserProfile);  
-    } catch (error) {
-        res.status(500).json({
-            message: "something went wrong updating user profile, try again later!",
-          });
-    }
-}
 
-module.exports = { createUser, getUsers, getUser, updateUser, deleteUser, createUserProfile, updateUserProfile, getUserProfile, replaceUser };
+//TO BE REVISITED
+// async function updateUserProfile(req, res) { 
+//     try{ 
+//         const { id } = req.params;
+//         const profile = req.body;
+//         const updatedUserProfile = await User.findByIdAndUpdate(id,profile);
+//         await updatedUserProfile.save();
+//         res.status(201).json(updatedUserProfile);  
+//     } catch (error) {
+//         res.status(500).json({
+//             message: "something went wrong updating user profile, try again later!",
+//           });
+//     }
+// }
+
+module.exports = { createUser, getUsers, getUser, updateUser, deleteUser, createUserProfile, 
+    // updateUserProfile,
+     getUserProfile, replaceUser };
 
 
 

@@ -1,4 +1,4 @@
-const { Board } = require('../../board/models/board-models')
+const { Board } = require("../../board/models/board-models");
 const { Report, Update } = require("../models/report-models");
 const { BadRequest } = require("../../authentication/middlewares/auth-errors");
 
@@ -73,84 +73,142 @@ async function removeUpdate(req, res) {
 //   }
 // }
 
-
-
 async function submitReport(req, res) {
-    try{
-        const report = await Report.create(req.body)
-        res.status(201).json(report);
-    }catch(error){
-        res.status(500).json({
-            message: 'something went wrong submitting report, try again later!'
-        })
-    }
+  try {
+    const report = await Report.create(req.body);
+    res.status(201).json(report);
+  } catch (error) {
+    res.status(500).json({
+      message: "something went wrong submitting report, try again later!",
+    });
+  }
 }
 
-async function readReports(req, res) { 
+async function readReports(req, res) {
+  try {
+    const reports = await Report.find({});
+    res.status(200).json(reports);
+  } catch (error) {
+    res.status(500).json({
+      message: "something went wrong reading reports, try again later!",
+    });
+  }
+}
+
+async function readReport(req, res) {
+  const { id } = req.params;
+  try {
+    const report = await Report.findById(id);
+    res.status(200).json(report);
+  } catch (error) {
+    res.status(500).json({
+      message: "something went wrong reading report, try again later!",
+    });
+  }
+}
+
+async function changeReport(req, res) {
+  const { id } = req.params;
+  const update = req.body;
+  try {
+    const updatedReport = await Report.findByIdAndUpdate(id, update);
+    res.status(200).json(updatedReport);
+  } catch (error) {
+    res.status(500).json({
+      message: "something went wrong updating report, try again later!",
+    });
+  }
+}
+
+async function closeReport(req, res) {
+  const { id } = req.params;
+  try {
+    const closedReport = await Report.findByIdAndDelete(id);
+    res.status(200).json(closedReport);
+  } catch (error) {
+    res.status(500).json({
+      message: "something went wrong closing report, try again later!",
+    });
+  }
+}
+
+async function addReporter(req, res) {
+  try {
+    const { id, user_id } = req.params;
+    const report = await Report.findByIdAndUpdate(
+      id,
+      {
+        $push: {
+          reporters: user_id,
+        },
+      },
+      {
+        new: true,
+        useFindAndModify: false,
+      }
+    );
+    res.status(201).json(report);
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "something went wrong adding reporters to report, try again later!",
+    });
+  }
+}
+
+async function getReporters(req, res) { 
     try{ 
-        const reports = await Report.find({});
-        res.status(200).json(reports);
-
-    } catch(error){ 
-        res.status(500).json({ 
-            message: 'something went wrong reading reports, try again later!'
-        })
-    }
-
-}
-
-async function readReport(req, res){ 
-    const { id } = req.params;
-    try {
-        const report = await Report.findById(id);
-        res.status(200).json(report)
-    } catch (error){
-        res.status(500).json({
-            message: 'something went wrong reading report, try again later!'
-        })
-    }
-}
-
-
-async function changeReport(req,res) { 
-    const { id } = req.params;
-    const update = req.body;
-    try{
-
-        const updatedReport = await Report.findByIdAndUpdate(id, update);
-        res.status(200).json(updatedReport);
+        const { id } = req.params;
+        const report = await Report.findById(id).populate('reporters');
+        const reporters = report.reporters;
+        res.status(200).json(reporters)
     } catch (error) {
         res.status(500).json({
-          message: "something went wrong updating report, try again later!",
+          message:
+            "something went wrong getting reporters, try again later!",
         });
       }
 }
 
-async function closeReport(req,res) { 
-    const { id } = req.params;
-    try{
+async function removeReporter(req, res){
+    try{ 
+        const { id, user_id } = req.params;
+        const report = await Report.findByIdAndUpdate(id, 
+            
+            { 
+                $pull: { 
+                    reporters: user_id
+                }
+            },
+            {
+                new: true,
+                useFindAndModify: false,
+              }
+            );
+            res.status(201).json(report);
 
-        const closedReport = await Report.findByIdAndDelete(id);
-        res.status(200).json(closedReport);
     } catch (error) {
         res.status(500).json({
-          message: "something went wrong closing report, try again later!",
+          message:
+            "something went wrong removing reporter, try again later!",
         });
       }
 }
-
-
 
 module.exports = {
   createUpdate,
   getUpdates,
   getUpdate,
   removeUpdate,
-//   upvoteUpdate,
-//   downvoteUpdate,
-submitReport,
-readReports,
-readReport,
-changeReport,
-closeReport
+  //   upvoteUpdate,
+  //   downvoteUpdate,
+  submitReport,
+  readReports,
+  readReport,
+  changeReport,
+  closeReport,
+  addReporter,
+  getReporters,
+  removeReporter
+
 };

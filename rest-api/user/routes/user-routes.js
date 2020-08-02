@@ -7,7 +7,7 @@ const {
   replaceUser,
   deleteUser,
   createUserProfile,
-  updateUserProfile,
+//   updateUserProfile,
   getUserProfile
 } = require("../controllers/user-controllers");
 
@@ -21,6 +21,6 @@ router.delete("/:id", deleteUser);
 
 router.post('/profile/:id', createUserProfile);
 router.get('/profile/:id', getUserProfile)
-router.put('/profile/:id', updateUserProfile);
+// router.put('/profile/:id', updateUserProfile);
 
 module.exports = router;

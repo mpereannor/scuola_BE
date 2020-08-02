@@ -11,7 +11,10 @@ const {
     readReports,
     readReport,
     changeReport,
-    closeReport
+    closeReport,
+    addReporter,
+    getReporters,
+    removeReporter
 }  = require('../controllers/report-controllers');
 
 //report
@@ -30,5 +33,8 @@ router.delete('/updates/:id', removeUpdate);
 // router.post('/:id', upvoteUpdate);
 // router.post('/:id', downvoteUpdate);
 
-
+//reporters
+router.patch('/:id/reporters/:user_id', addReporter);
+router.get('/:id/reporters', getReporters)
+router.delete('/:id/reporters/:user_id', removeReporter);
 module.exports = router;
