@@ -1,77 +1,6 @@
-const { Board } = require("../../board/models/board-models");
+const { Board, Tag } = require("../../board/models/board-models");
 const { Report, Update } = require("../models/report-models");
 const { BadRequest } = require("../../authentication/middlewares/auth-errors");
-
-async function createUpdate(req, res) {
-  try {
-    const update = await Update.create(req.body);
-    res.status(201).json(update);
-  } catch (error) {
-    res.status(500).json({
-      message: "something went wrong creating an update, try again later!",
-    });
-  }
-}
-
-async function getUpdates(req, res) {
-  try {
-    const updates = await Update.find({}).sort({ createdAt: 1 }).limit(10);
-    res.status(200).json(updates);
-  } catch (error) {
-    res.status(500).json({
-      message: "something went wrong retrieving updates, try again later!",
-    });
-  }
-}
-
-async function getUpdate(req, res) {
-  const { id } = req.params;
-  try {
-    const update = await Update.findById(id);
-    res.status(200).json(update);
-  } catch (error) {
-    res.status(500).json({
-      message: "something went wrong retrieving update, try again later!",
-    });
-  }
-}
-
-async function removeUpdate(req, res) {
-  const { id } = req.params;
-  try {
-    const update = await Update.findByIdAndRemove(id);
-    res.status(200).json(update);
-  } catch (error) {
-    res.status(500).json({
-      message: "something went wrong removing update, try again later!",
-    });
-  }
-}
-
-// async function upvoteUpdate(req, res) {
-//   const { id } = req.params;
-//   const upvote = req.body;
-//   try {
-//     const upvotedUpdate = await Update.findByIdAndUpdate(id, upvote);
-//     res.status(201).json(upvotedUpdate);
-//   } catch (error) {
-//     res.status(500).json({
-//       message: "something went wrong upvoting update, try again later!",
-//     });
-//   }
-// }
-// async function downvoteUpdate(req, res) {
-//   const { id } = req.params;
-//   const downvote = req.body;
-//   try {
-//     const downvotedUpdate = await Update.findByIdAndUpdate(id, downvote);
-//     res.status(201).json(downvotedUpdate);
-//   } catch (error) {
-//     res.status(500).json({
-//       message: "something went wrong downvoting update, try again later!",
-//     });
-//   }
-// }
 
 async function submitReport(req, res) {
   try {
@@ -195,13 +124,116 @@ async function removeReporter(req, res){
       }
 }
 
+
+async function createUpdateAndAssignToReport(req, res) { 
+    try{ 
+        const { id } = req.params;
+        const update = req.body;
+        const reportUpdate = await Update.create(update);
+        const report = await Report.findById(id);
+        report.updates = reportUpdate._id;
+        await report.save();
+        res.status(201).json(report)
+    } catch (error) {
+        res.status(500).json({
+            message: "something went wrong creating report update, try again later!",
+          });
+    }
+} 
+async function assignUpdateToReport(req,res) { 
+    try{ 
+        const { id, update_id } = req.params;
+        const report = await Report.findByIdAndUpdate(
+            id,
+            { 
+                $push: { 
+                    updates: update_id
+                }
+            },
+            {
+                new: true,
+                useFindAndModify: false,
+              }
+            );
+        res.status(201).json(report)
+    } catch (error) {
+        res.status(500).json({
+            message: "something went wrong assigning update to report, try again later!",
+          });
+    }
+} 
+
+async function getReportUpdates(req, res) { 
+    try{ 
+        const { id } = req.params;
+        const report = await Report.findById(id).populate(
+            {
+
+                path:'updates',
+                options: { 
+                    limit: 10,
+                    sort:  
+                        'createdAt'
+                    
+                }
+            }
+            );
+        const updates = report.updates;
+        res.status(200).json(updates)
+    } catch (error) {
+        res.status(500).json({
+          message:
+            "something went wrong getting report updates, try again later!",
+        });
+      }
+}
+
+async function createReportTag(req, res) {
+    try {
+        const { id } = req.params;
+        const tag = req.body;
+        const createdTag = await Tag.create(tag);
+        const report = await Report.findByIdAndUpdate(
+            id,
+            { 
+                $push: { 
+                    tags: createdTag._id
+                }
+            },
+            { 
+                new: true, useFindAndModify: false
+            }
+        );
+        res.status(201).json(report)
+    } catch (error) {
+        res.status(500).json({
+            message: "something went wrong creating tag for report, try again later!",
+          });
+        
+    }
+}
+
+async function getReportTags(req, res) { 
+
+    try{ 
+        const { id } = req.params;
+        const report = await Report.findById(id).populate('tags');
+        const tags = report.tags;
+        res.status(200).json(tags)
+    } catch (error) {
+        res.status(500).json({
+          message:
+            "something went wrong getting report tags, try again later!",
+        });
+      }
+}
+
+
+
+
+
+
 module.exports = {
-  createUpdate,
-  getUpdates,
-  getUpdate,
-  removeUpdate,
-  //   upvoteUpdate,
-  //   downvoteUpdate,
   submitReport,
   readReports,
   readReport,
@@ -209,6 +241,10 @@ module.exports = {
   closeReport,
   addReporter,
   getReporters,
-  removeReporter
-
+  removeReporter,
+  createUpdateAndAssignToReport,
+  assignUpdateToReport,
+  getReportUpdates,
+  createReportTag,
+  getReportTags,
 };

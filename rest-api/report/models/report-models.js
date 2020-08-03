@@ -14,7 +14,7 @@ const reportSchema = new Schema(
       required: true,
     },
     report_finding: {
-      asset: [
+      assets: [
         {
           type: String,
         },
@@ -44,25 +44,8 @@ const reportSchema = new Schema(
 );
 
 
-const updateSchema = new Schema({ 
-    update:{ 
-        type: String
-    },
-    upvote: { 
-        type: Number,
-        default: 0
-    },
-    downvote: { 
-        type: Number,
-        default: 0
-    },
-    user: { 
-        type: mongoose.Schema.Types.ObjectId, ref: 'User'
-    }
-},
-{ timestamps: true})
+
 
 const Report = model("Report", reportSchema);
-const Update = model('Update',  updateSchema);
 
-module.exports = { Report, Update }
+module.exports = { Report }

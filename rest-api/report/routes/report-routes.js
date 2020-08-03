@@ -1,12 +1,6 @@
 const router = require('express').Router();
 
 const { 
-    createUpdate,
-    getUpdates,
-    getUpdate,
-    removeUpdate,
-    // upvoteUpdate,
-    // downvoteUpdate,
     submitReport,
     readReports,
     readReport,
@@ -14,7 +8,12 @@ const {
     closeReport,
     addReporter,
     getReporters,
-    removeReporter
+    removeReporter,
+    createUpdateAndAssignToReport,
+    assignUpdateToReport,
+    getReportUpdates,
+    createReportTag,
+    getReportTags
 }  = require('../controllers/report-controllers');
 
 //report
@@ -24,17 +23,20 @@ router.get('/:id', readReport);
 router.put('/:id', changeReport);
 router.delete('/:id', closeReport);
 
-
 //updates
-router.post('/updates', createUpdate);
-router.get('/updates', getUpdates);
-router.get('/updates/:id', getUpdate);
-router.delete('/updates/:id', removeUpdate);
-// router.post('/:id', upvoteUpdate);
-// router.post('/:id', downvoteUpdate);
+router.post('/:id/updates',  createUpdateAndAssignToReport,
+router.patch('/:id/updates/:update_id', assignUpdateToReport)
+);
+router.get('/:id/updates',
+getReportUpdates)
 
 //reporters
 router.patch('/:id/reporters/:user_id', addReporter);
 router.get('/:id/reporters', getReporters)
 router.delete('/:id/reporters/:user_id', removeReporter);
+
+//tags
+router.post('/:id/tags/', createReportTag);
+router.get('/:id/tags/', getReportTags);
+
 module.exports = router;
