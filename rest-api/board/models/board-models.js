@@ -1,4 +1,3 @@
-
 const mongoose = require("mongoose");
 const { Schema, model } = mongoose;
 
@@ -52,10 +51,12 @@ const issueSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Report",
     },
-    reporters: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    }],
+    reporters: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   { timestamps: true }
 );
@@ -68,19 +69,6 @@ const tagSchema = new Schema(
     color: {
       type: String,
     },
-    // reports: [
-    //     { 
-    //         type: mongoose.Schema.Types.ObjectId,
-    //         ref: 'Report'
-    //     }
-    // ],
-    // issues: [
-    //     { 
-    //         type: mongoose.Schema.Types.ObjectId,
-    //         ref: 'Issue'
-    //     }
-    // ],
-
   },
   { timestamps: true }
 );
@@ -114,10 +102,10 @@ const boardSchema = new Schema(
     },
     groups: [groupSchema],
     reports: [
-        { 
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Report'
-        }
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Report",
+      },
     ],
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -133,4 +121,3 @@ const Issue = model("Issue", issueSchema);
 const Tag = model("Tag", tagSchema);
 
 module.exports = { Board, Group, Issue, Tag };
-

@@ -24,7 +24,7 @@ async function getBoards(req, res) {
 }
 
 async function getBoard(req, res) {
-    const { id } = req.params;
+  const { id } = req.params;
   try {
     const board = await Board.findById(id);
     res.status(200).json(board);
@@ -167,57 +167,51 @@ async function getIssuesInGroup(req, res) {
   }
 }
 
-async function getIssueInGroup(req, res) { 
-    const { id, group_id, issue_id } = req.params;
-    try{ 
-        const targetBoard = await Board.findById(id);
-        const targetGroup = await targetBoard.groups.id(group_id);
-        const issue = await targetGroup.issue.id(issue_id);
-        res.status(200).json(issue);
-    } catch (error) {
-        res.status(500).json({
-          message:
-            "something went wrong retrieving issue from group, try again later!",
-        });
-      }
-    }
-
-async function updateIssueInGroup(req, res) {
-    const { id ,group_id, issue_id } = req.params;
-    const update = req.body;
-    try{
-        const targetBoard = await Board.findById(id);
-        const targetGroup = await targetBoard.groups.id(group_id);
-        const targetIssue = await targetGroup.issue.id(issue_id);
-        targetIssue.set(update);
-        const updatedIssue = await targetBoard.save();
-        res.status(201).json(updatedIssue);
-    } catch(error) { 
-        res.status(500).json({
-            message:
-              "something went wrong updating issue, try again later!",
-          });
-
-    }
+async function getIssueInGroup(req, res) {
+  const { id, group_id, issue_id } = req.params;
+  try {
+    const targetBoard = await Board.findById(id);
+    const targetGroup = await targetBoard.groups.id(group_id);
+    const issue = await targetGroup.issue.id(issue_id);
+    res.status(200).json(issue);
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "something went wrong retrieving issue from group, try again later!",
+    });
+  }
 }
 
-async function closeIssueInGroup(req, res) { 
-    const { id, group_id, issue_id } = req.params;
-    try {
-        const targetBoard = await Board.findById(id);
-        const targetGroup = await targetBoard.groups.id(group_id);
-        const archivedIssue = await targetGroup.issue.id(issue_id).remove();
-        const updatedIssue = await targetBoard.save()
-        res.status(200).json(archivedIssue)
-    } catch (error) {
-        res.status(500).json({
-            message:
-              "something went wrong closing issue, try again later!",
-          });
+async function updateIssueInGroup(req, res) {
+  const { id, group_id, issue_id } = req.params;
+  const update = req.body;
+  try {
+    const targetBoard = await Board.findById(id);
+    const targetGroup = await targetBoard.groups.id(group_id);
+    const targetIssue = await targetGroup.issue.id(issue_id);
+    targetIssue.set(update);
+    const updatedIssue = await targetBoard.save();
+    res.status(201).json(updatedIssue);
+  } catch (error) {
+    res.status(500).json({
+      message: "something went wrong updating issue, try again later!",
+    });
+  }
+}
 
-        
-    }
-    
+async function closeIssueInGroup(req, res) {
+  const { id, group_id, issue_id } = req.params;
+  try {
+    const targetBoard = await Board.findById(id);
+    const targetGroup = await targetBoard.groups.id(group_id);
+    const archivedIssue = await targetGroup.issue.id(issue_id).remove();
+    const updatedIssue = await targetBoard.save();
+    res.status(200).json(archivedIssue);
+  } catch (error) {
+    res.status(500).json({
+      message: "something went wrong closing issue, try again later!",
+    });
+  }
 }
 module.exports = {
   createBoard,
@@ -234,5 +228,5 @@ module.exports = {
   getIssuesInGroup,
   getIssueInGroup,
   updateIssueInGroup,
-  closeIssueInGroup
+  closeIssueInGroup,
 };

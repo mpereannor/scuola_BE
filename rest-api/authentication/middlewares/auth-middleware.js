@@ -5,8 +5,8 @@ const { BadRequest, Unauthorized } = require("../middlewares/auth-errors");
 const isLoggedIn = (req) => !!req.session.userId;
 
 const logIn = (req, userId) => {
-    req.session.userId = userId;
-    req.session.createdAt = Date.now();
+  req.session.userId = userId;
+  req.session.createdAt = Date.now();
 };
 
 const logOut = (req, res) => {
@@ -35,7 +35,4 @@ const authUser = (req, res, next) => {
   next();
 };
 
-
-
-
-module.exports = { isLoggedIn,logIn, logOut, guest, authUser };
+module.exports = { isLoggedIn, logIn, logOut, guest, authUser };

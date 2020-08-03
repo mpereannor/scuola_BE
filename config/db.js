@@ -9,7 +9,7 @@ const {
 
 } = process.env
 */
-mongoose.set('useCreateIndex', true);
+mongoose.set("useCreateIndex", true);
 
 const dbConnect = async () => {
   const connection = await mongoose.connect(process.env.MONGO_URI, {
@@ -18,11 +18,5 @@ const dbConnect = async () => {
     useFindAndModify: false,
   });
   console.log(`database connected: ${connection.connection.host}`);
-
-  //    const connection = await mongoose.connect(`mongodb+srv://:${MONGO_USERNAME}:${encodeURIComponent(MONGO_PASSWORD)}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}`,{
-  //        useNewUrlParser: true,
-  //        useUnifiedTopology: true,
-  //        useFindAndModify : false
-  //    })
 };
 module.exports = dbConnect;

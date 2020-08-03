@@ -85,153 +85,138 @@ async function addReporter(req, res) {
   }
 }
 
-async function getReporters(req, res) { 
-    try{ 
-        const { id } = req.params;
-        const report = await Report.findById(id).populate('reporters');
-        const reporters = report.reporters;
-        res.status(200).json(reporters)
-    } catch (error) {
-        res.status(500).json({
-          message:
-            "something went wrong getting reporters, try again later!",
-        });
-      }
+async function getReporters(req, res) {
+  try {
+    const { id } = req.params;
+    const report = await Report.findById(id).populate("reporters");
+    const reporters = report.reporters;
+    res.status(200).json(reporters);
+  } catch (error) {
+    res.status(500).json({
+      message: "something went wrong getting reporters, try again later!",
+    });
+  }
 }
 
-async function removeReporter(req, res){
-    try{ 
-        const { id, user_id } = req.params;
-        const report = await Report.findByIdAndUpdate(id, 
-            
-            { 
-                $pull: { 
-                    reporters: user_id
-                }
-            },
-            {
-                new: true,
-                useFindAndModify: false,
-              }
-            );
-            res.status(201).json(report);
+async function removeReporter(req, res) {
+  try {
+    const { id, user_id } = req.params;
+    const report = await Report.findByIdAndUpdate(
+      id,
 
-    } catch (error) {
-        res.status(500).json({
-          message:
-            "something went wrong removing reporter, try again later!",
-        });
+      {
+        $pull: {
+          reporters: user_id,
+        },
+      },
+      {
+        new: true,
+        useFindAndModify: false,
       }
+    );
+    res.status(201).json(report);
+  } catch (error) {
+    res.status(500).json({
+      message: "something went wrong removing reporter, try again later!",
+    });
+  }
 }
 
-
-async function createUpdateAndAssignToReport(req, res) { 
-    try{ 
-        const { id } = req.params;
-        const update = req.body;
-        const reportUpdate = await Update.create(update);
-        const report = await Report.findById(id);
-        report.updates = reportUpdate._id;
-        await report.save();
-        res.status(201).json(report)
-    } catch (error) {
-        res.status(500).json({
-            message: "something went wrong creating report update, try again later!",
-          });
-    }
-} 
-async function assignUpdateToReport(req,res) { 
-    try{ 
-        const { id, update_id } = req.params;
-        const report = await Report.findByIdAndUpdate(
-            id,
-            { 
-                $push: { 
-                    updates: update_id
-                }
-            },
-            {
-                new: true,
-                useFindAndModify: false,
-              }
-            );
-        res.status(201).json(report)
-    } catch (error) {
-        res.status(500).json({
-            message: "something went wrong assigning update to report, try again later!",
-          });
-    }
-} 
-
-async function getReportUpdates(req, res) { 
-    try{ 
-        const { id } = req.params;
-        const report = await Report.findById(id).populate(
-            {
-
-                path:'updates',
-                options: { 
-                    limit: 10,
-                    sort:  
-                        'createdAt'
-                    
-                }
-            }
-            );
-        const updates = report.updates;
-        res.status(200).json(updates)
-    } catch (error) {
-        res.status(500).json({
-          message:
-            "something went wrong getting report updates, try again later!",
-        });
+async function createUpdateAndAssignToReport(req, res) {
+  try {
+    const { id } = req.params;
+    const update = req.body;
+    const reportUpdate = await Update.create(update);
+    const report = await Report.findById(id);
+    report.updates = reportUpdate._id;
+    await report.save();
+    res.status(201).json(report);
+  } catch (error) {
+    res.status(500).json({
+      message: "something went wrong creating report update, try again later!",
+    });
+  }
+}
+async function assignUpdateToReport(req, res) {
+  try {
+    const { id, update_id } = req.params;
+    const report = await Report.findByIdAndUpdate(
+      id,
+      {
+        $push: {
+          updates: update_id,
+        },
+      },
+      {
+        new: true,
+        useFindAndModify: false,
       }
+    );
+    res.status(201).json(report);
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "something went wrong assigning update to report, try again later!",
+    });
+  }
+}
+
+async function getReportUpdates(req, res) {
+  try {
+    const { id } = req.params;
+    const report = await Report.findById(id).populate({
+      path: "updates",
+      options: {
+        limit: 10,
+        sort: "createdAt",
+      },
+    });
+    const updates = report.updates;
+    res.status(200).json(updates);
+  } catch (error) {
+    res.status(500).json({
+      message: "something went wrong getting report updates, try again later!",
+    });
+  }
 }
 
 async function createReportTag(req, res) {
-    try {
-        const { id } = req.params;
-        const tag = req.body;
-        const createdTag = await Tag.create(tag);
-        const report = await Report.findByIdAndUpdate(
-            id,
-            { 
-                $push: { 
-                    tags: createdTag._id
-                }
-            },
-            { 
-                new: true, useFindAndModify: false
-            }
-        );
-        res.status(201).json(report)
-    } catch (error) {
-        res.status(500).json({
-            message: "something went wrong creating tag for report, try again later!",
-          });
-        
-    }
-}
-
-async function getReportTags(req, res) { 
-
-    try{ 
-        const { id } = req.params;
-        const report = await Report.findById(id).populate('tags');
-        const tags = report.tags;
-        res.status(200).json(tags)
-    } catch (error) {
-        res.status(500).json({
-          message:
-            "something went wrong getting report tags, try again later!",
-        });
+  try {
+    const { id } = req.params;
+    const tag = req.body;
+    const createdTag = await Tag.create(tag);
+    const report = await Report.findByIdAndUpdate(
+      id,
+      {
+        $push: {
+          tags: createdTag._id,
+        },
+      },
+      {
+        new: true,
+        useFindAndModify: false,
       }
+    );
+    res.status(201).json(report);
+  } catch (error) {
+    res.status(500).json({
+      message: "something went wrong creating tag for report, try again later!",
+    });
+  }
 }
 
-
-
-
-
+async function getReportTags(req, res) {
+  try {
+    const { id } = req.params;
+    const report = await Report.findById(id).populate("tags");
+    const tags = report.tags;
+    res.status(200).json(tags);
+  } catch (error) {
+    res.status(500).json({
+      message: "something went wrong getting report tags, try again later!",
+    });
+  }
+}
 
 module.exports = {
   submitReport,

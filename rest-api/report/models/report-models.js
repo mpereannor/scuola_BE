@@ -20,7 +20,7 @@ const reportSchema = new Schema(
         },
       ],
       note: {
-          type: String
+        type: String,
       },
       status: {
         type: String,
@@ -29,23 +29,23 @@ const reportSchema = new Schema(
         type: Number,
       },
     },
-    updates: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Update'
-    }],
-      tags: [{ 
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'Tag'
-        },
-    ], 
+    updates: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Update",
+      },
+    ],
+    tags: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Tag",
+      },
+    ],
   },
 
   { timestamps: true }
 );
 
-
-
-
 const Report = model("Report", reportSchema);
 
-module.exports = { Report }
+module.exports = { Report };

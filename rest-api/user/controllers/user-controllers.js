@@ -12,17 +12,15 @@ async function createUser(req, res) {
   }
 }
 
-function getUsers(req, res) {
-  User.find({})
-    .then((user) => {
-      res.status(201).json(user);
-    })
-    .catch((error) => {
-      res.status(500).json({
-        message: "something went wrong getting users, try again later!",
-        error: error.message,
-      });
+async function getUsers(req, res) {
+  try {
+    const users = await User.find({});
+    res.status(201).json(users);
+  } catch (error) {
+    res.status(500).json({
+      message: "something went wrong getting users, try again later!",
     });
+  }
 }
 
 async function getUser(req, res) {
@@ -71,51 +69,48 @@ async function deleteUser(req, res) {
   } catch (error) {
     res.status(500).json({
       message: "something went wrong deleting user, try again later!",
-      error: error.message
+      error: error.message,
     });
   }
 }
 
-async function createUserProfile(req, res) { 
-    try {
-        const { id } = req.params;
-        const  profile = req.body;
-        const userProfile = await Profile.create(profile);
-        const user = await User.findById(id);
-        user.profile = userProfile._id;
-        await user.save()
-        res.status(201).json(user);  
-    } 
-    catch (error) {
-        res.status(500).json({
-            message: "something went wrong creating user profile, try again later!",
-          });
-    }
+async function createUserProfile(req, res) {
+  try {
+    const { id } = req.params;
+    const profile = req.body;
+    const userProfile = await Profile.create(profile);
+    const user = await User.findById(id);
+    user.profile = userProfile._id;
+    await user.save();
+    res.status(201).json(user);
+  } catch (error) {
+    res.status(500).json({
+      message: "something went wrong creating user profile, try again later!",
+    });
+  }
 }
 
-async function getUserProfile(req, res) { 
-    try{ 
-        const { id } = req.params;
-        const user = await User.findById(id).populate('profile');
-        const userProfile = user.profile;
-        res.status(200).json(userProfile);  
-
-    } catch (error) {
-        res.status(500).json({
-            message: "something went wrong fetching user profile, try again later!",
-          });
-    }
+async function getUserProfile(req, res) {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id).populate("profile");
+    const userProfile = user.profile;
+    res.status(200).json(userProfile);
+  } catch (error) {
+    res.status(500).json({
+      message: "something went wrong fetching user profile, try again later!",
+    });
+  }
 }
-
 
 //TO BE REVISITED
-// async function updateUserProfile(req, res) { 
-//     try{ 
+// async function updateUserProfile(req, res) {
+//     try{
 //         const { id } = req.params;
 //         const profile = req.body;
 //         const updatedUserProfile = await User.findByIdAndUpdate(id,profile);
 //         await updatedUserProfile.save();
-//         res.status(201).json(updatedUserProfile);  
+//         res.status(201).json(updatedUserProfile);
 //     } catch (error) {
 //         res.status(500).json({
 //             message: "something went wrong updating user profile, try again later!",
@@ -123,9 +118,14 @@ async function getUserProfile(req, res) {
 //     }
 // }
 
-module.exports = { createUser, getUsers, getUser, updateUser, deleteUser, createUserProfile, 
-    // updateUserProfile,
-     getUserProfile, replaceUser };
-
-
-
+module.exports = {
+  createUser,
+  getUsers,
+  getUser,
+  updateUser,
+  deleteUser,
+  createUserProfile,
+  // updateUserProfile,
+  getUserProfile,
+  replaceUser,
+};

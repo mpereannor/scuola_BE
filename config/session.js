@@ -19,7 +19,7 @@ const SESSION_OPTIONS = {
     // secure: IN_PROD,
     secure: false,
     // sameSite: true,
-    sameSite: false
+    sameSite: false,
   },
   rolling: true,
   resave: false,
