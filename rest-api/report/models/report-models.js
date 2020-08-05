@@ -13,12 +13,11 @@ const reportSchema = new Schema(
       type: String,
       required: true,
     },
-    report_finding: {
-      assets: [
+    assets: 
         {
-          type: String,
+          type: Buffer,
         },
-      ],
+      
       note: {
         type: String,
       },
@@ -28,7 +27,7 @@ const reportSchema = new Schema(
       severity: {
         type: Number,
       },
-    },
+
     updates: [
       {
         type: mongoose.Schema.Types.ObjectId,
