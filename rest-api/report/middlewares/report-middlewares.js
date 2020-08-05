@@ -4,8 +4,8 @@ const { BadRequest } = require('../../authentication/middlewares/auth-errors');
 const upload = multer({ 
     limits: { fileSize: 1000000 },
     fileFilter(req, file, cb){ 
-        if(!file.originalname.match(/\.(png|jpeg|jpg)$/)){ 
-            return cb('Please upload an image')
+        if(!file.originalname.match(/\.(doc|docx|pdf)$/)){ 
+            return cb('Please upload a PDF  or a word document')
         }
         cb(undefined, true)
     }

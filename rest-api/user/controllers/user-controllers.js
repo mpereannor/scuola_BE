@@ -1,4 +1,5 @@
 const { User, Profile } = require("../models/user-models");
+const sharp = require('sharp');
 
 async function createUser(req, res) {
   try {
@@ -103,21 +104,45 @@ async function getUserProfile(req, res) {
   }
 }
 
-//TO BE REVISITED
-// async function updateUserProfile(req, res) {
-//     try{
-//         const { id } = req.params;
-//         const profile = req.body;
-//         const updatedUserProfile = await User.findByIdAndUpdate(id,profile);
-//         await updatedUserProfile.save();
-//         res.status(201).json(updatedUserProfile);
-//     } catch (error) {
-//         res.status(500).json({
-//             message: "something went wrong updating user profile, try again later!",
-//           });
-//     }
-// }
+async function uploadAvatar(req, res) {
+    try{
+        // const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer()
+        const { id } = req.params;
+        const newAvatar = req.file.buffer;
+        const userAvatar = await Profile.findByIdAndUpdate(
+            id,
+            { 
+                $push: { 
+                    avatar : newAvatar
+                },
+            },
+            { 
+                new: true,
+                useFindAndModify: false,
+            }
+        )
+        res.status(201).json(userAvatar)
+    }
+    catch (error) {
+        res.status(500).json({
+            message: "something went wrong uploading avatar, try again later!",
+          });
+    }
+    }
 
+async function displayAvatar(req, res){ 
+    try{
+        const { id } = req.params;
+        const user = await User.findById(id).populate('profile', 'avatar');
+        const userProfile = user.profile
+        res.set('Content-Type', 'image/jpg')
+        res.status(200).json(userProfile)
+    }  catch (error) {
+        res.status(500).json({
+            message: "something went wrong displaying avatar, try again later!",
+          });
+    }
+}
 module.exports = {
   createUser,
   getUsers,
@@ -125,7 +150,8 @@ module.exports = {
   updateUser,
   deleteUser,
   createUserProfile,
-  // updateUserProfile,
+  uploadAvatar,
   getUserProfile,
   replaceUser,
+  displayAvatar 
 };

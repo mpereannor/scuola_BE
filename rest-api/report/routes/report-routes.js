@@ -14,8 +14,14 @@ const {
   getReportUpdates,
   createReportTag,
   getReportTags,
+  uploadReportAsset,
+  getReportAsset
 } = require("../controllers/report-controllers");
 
+
+const { 
+    upload
+}  = require('../middlewares/report-middlewares');
 //report
 router.post("/", submitReport);
 router.get("/", readReports);
@@ -35,6 +41,10 @@ router.get("/:id/updates", getReportUpdates);
 router.patch("/:id/reporters/:user_id", addReporter);
 router.get("/:id/reporters", getReporters);
 router.delete("/:id/reporters/:user_id", removeReporter);
+
+//assets
+router.post('/:id/asset', upload.single('asset'), uploadReportAsset)
+router.get('/:id/asset', getReportAsset )
 
 //tags
 router.post("/:id/tags/", createReportTag);

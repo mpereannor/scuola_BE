@@ -57,6 +57,9 @@ const profileSchema = new Schema(
     image: {
       type: String,
     },
+    avatar: { 
+        type: Buffer
+    },
     age: {
       type: Number,
     },

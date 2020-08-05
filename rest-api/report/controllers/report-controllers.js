@@ -218,6 +218,45 @@ async function getReportTags(req, res) {
   }
 }
 
+async function uploadReportAsset(req, res){ 
+    try{ 
+         const { id } = req.params;
+         const asset = req.file.buffer;
+         const reportAsset = await Report.findByIdAndUpdate(
+             id,
+             { 
+                 $push: { 
+                     assets : asset
+                 }
+             },
+             { 
+                new: true,
+                useFindAndModify: false,
+            }
+        )
+        res.status(201).json(reportAsset)
+
+    } catch(error){ 
+        res.status(500).json({
+            message: 'something went wrong uploading document, try again later!'
+        })
+    }
+}
+
+async function getReportAsset(req, res){ 
+    try{
+        const { id } = req.params;
+        const report = await Report.findById(id);
+        const asset = report.report_finding.assets;
+        res.set('Content-Type', 'image/jpg')
+        res.status(200).json(asset)
+    }  catch (error) {
+        res.status(500).json({
+            message: "something went wrong fetching document, try again later!",
+          });
+    }
+}
+
 module.exports = {
   submitReport,
   readReports,
@@ -232,4 +271,6 @@ module.exports = {
   getReportUpdates,
   createReportTag,
   getReportTags,
+  uploadReportAsset,
+  getReportAsset
 };
