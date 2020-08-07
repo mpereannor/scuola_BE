@@ -15,7 +15,9 @@ async function createUser(req, res) {
 
 async function getUsers(req, res) {
   try {
-    const users = await User.find({});
+    const users = await User.find({}).sort({ 
+        createdAt: 1
+    }).limit(10);
     res.status(201).json(users);
   } catch (error) {
     res.status(500).json({
