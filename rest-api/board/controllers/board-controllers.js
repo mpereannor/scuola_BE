@@ -1,4 +1,4 @@
-const { Board } = require("../models/board-models");
+const { Board, Issue } = require("../models/board-models");
 const { BadRequest } = require("../../authentication/middlewares/auth-errors");
 
 async function createBoard(req, res) {
@@ -60,6 +60,90 @@ async function archiveBoard(req, res) {
   }
 }
 
+async function linkReportToBoard( req, res) { 
+    try {
+        const { id, report_id } = req.params;
+        const targetBoard = await Board.findByIdAndUpdate(
+            id,
+            { 
+                $push: { 
+                    reports: report_id
+                }
+            }, 
+            {
+                new: true,
+                useFindAndModify: false,
+              }
+        );
+        res.status(200).json(targetBoard);
+
+    } catch (error) {
+        res.status(500).json({
+            message: `something went wrong linking report to board, try again later!
+            ${error.message}`
+          });
+    }
+}
+
+
+async function getBoardReports(req, res) { 
+    try {
+        const { id } = req.params;
+        const board = await Board.findById(id).populate('reports');
+        const reports = board.reports;
+        res.status(200).json(reports)
+    } catch (error) {
+        res.status(500).json({
+            message: `something went wrong retrieving board reports, try again later!
+            ${error.message}`
+         })
+    }
+
+}
+async function addUser( req, res) { 
+    try {
+        const { id, user_id } = req.params;
+        const targetBoard = await Board.findByIdAndUpdate(
+            id,
+            { 
+                $push: { 
+                    reports: user_id
+                }
+            }, 
+            {
+                new: true,
+                useFindAndModify: false,
+              }
+        );
+        res.status(200).json(targetBoard);
+
+    } catch (error) {
+        res.status(500).json({
+            message: `something went wrong adding user to board, try again later!
+            ${error.message}`
+          });
+    }
+}
+
+
+async function getUser(req, res) { 
+    try {
+        const { id } = req.params;
+        const board = await Board.findById(id).populate('user');
+        const user = board.user;
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(500).json({
+            message: `something went wrong retrieving board user, try again later!
+            ${error.message}`
+         })
+    }
+
+}
+
+
+
+//groups
 async function createGroupInBoard(req, res) {
   try {
     const targetBoard = await Board.findById(req.params.id);
@@ -135,6 +219,8 @@ async function archiveGroupInBoard(req, res) {
   }
 }
 
+
+//issues
 async function submitIssue(req, res) {
   const { id, group_id } = req.params;
   const issueData = req.body;
@@ -213,6 +299,72 @@ async function closeIssueInGroup(req, res) {
     });
   }
 }
+
+async function assignUserToIssue(req, res){ 
+    try {
+        const { id, group_id, issue_id, user_id } = req.params;
+        const targetBoard = await Board.findById(id);
+        const targetGroup = await targetBoard.groups.id(group_id);
+        const issue = await targetGroup.issue.id(issue_id);
+        issue.assigned_user = user_id;
+        await targetBoard.save();
+        res.status(200).json(targetBoard);
+
+    } catch (error) {
+        res.status(500).json({
+            message: "something went wrong assigning issue to user, try again later!",
+          });
+    }
+}
+
+
+async function retrieveAssignedUser(req, res) { 
+    try {
+        const { id, group_id, issue_id } = req.params;
+        // const targetBoard = await Board.findById(id);
+        // const targetGroup = await targetBoard.groups.id(group_id);
+        // const issue = await targetGroup.issue.id(issue_id);
+        // issue.populate('assigned_user')
+        
+        const targetBoard = await Board.findById(id).populate(
+           `groups(${group_id}).issue(${issue_id}).assigned_user`
+        )
+        res.status(200).json(targetBoard.groups.issue)    
+       
+    } catch (error) {
+        res.status(500).json({
+            message: `something went wrong retrieving assigned user, try again later!
+            ${error.message}`
+          });
+        
+    }
+}
+
+// async function createBoardTag(req, res){ 
+    
+// }
+// async function getBoardTags(req, res){ 
+    
+// }
+// async function linkReportToIssue(req, res){ 
+    
+// }
+// async function getLinkedReports(req, res){ 
+    
+// }
+// async function unlinkReportToIssue(req, res){ 
+    
+// }
+// async function addReporterToIssue(req, res){ 
+    
+// }
+// async function getIssueReporters(req, res){ 
+    
+// }
+// async function removeReporterIssue(req, res){ 
+    
+// }
+
 module.exports = {
   createBoard,
   getBoards,
@@ -229,4 +381,12 @@ module.exports = {
   getIssueInGroup,
   updateIssueInGroup,
   closeIssueInGroup,
+  assignUserToIssue,
+  retrieveAssignedUser, 
+  linkReportToBoard,
+  getBoardReports, 
+  addUser, 
+  getUser
 };
+// 5ecdf5e059dc404f5caedb82
+//5f2b20c74037510ebcff00db

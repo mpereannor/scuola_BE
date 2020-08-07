@@ -63,6 +63,8 @@ async function closeReport(req, res) {
 
 async function addReporter(req, res) {
   try {
+
+    //todo: user_id to be refactored from params to body
     const { id, user_id } = req.params;
     const report = await Report.findByIdAndUpdate(
       id,
@@ -247,8 +249,8 @@ async function getReportAsset(req, res){
     try{
         const { id } = req.params;
         const report = await Report.findById(id);
-        const asset = report.report_finding.assets;
-        res.set('Content-Type', 'image/jpg')
+        const asset = report.assets;
+        res.set('Content-Type', 'application/pdf')
         res.status(200).json(asset)
     }  catch (error) {
         res.status(500).json({

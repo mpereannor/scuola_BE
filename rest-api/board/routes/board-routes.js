@@ -18,6 +18,12 @@ const {
   getIssueInGroup,
   updateIssueInGroup,
   closeIssueInGroup,
+  assignUserToIssue,
+  retrieveAssignedUser,
+  linkReportToBoard,
+  getBoardReports,
+  addUser, 
+  getUser
 } = require("../controllers/board-controllers");
 
 //boards
@@ -26,6 +32,10 @@ router.get("/", getBoards);
 router.get("/:id", getBoard);
 router.patch("/:id", updateBoard);
 router.delete("/:id", archiveBoard);
+router.patch('/:id/reports/:report_id', linkReportToBoard );
+router.get('/:id/reports', getBoardReports);
+router.patch('/:id/user/:user_id', addUser);
+router.get('/:id/user', getUser)
 
 //groups
 router.post("/:id/groups", createGroupInBoard);
@@ -40,5 +50,8 @@ router.get("/:id/groups/:group_id/issues", getIssuesInGroup);
 router.get("/:id/groups/:group_id/issues/:issue_id", getIssueInGroup);
 router.patch("/:id/groups/:group_id/issues/:issue_id", updateIssueInGroup);
 router.delete("/:id/groups/:group_id/issues/:issue_id", closeIssueInGroup);
+
+router.patch('/:id/groups/:group_id/issues/:issue_id/users/:user_id', assignUserToIssue);
+router.get('/:id/groups/:group_id/issues/:issue_id/users', retrieveAssignedUser)
 
 module.exports = router;
