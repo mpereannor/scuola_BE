@@ -9,6 +9,7 @@ const dbConnect = require("../config/db");
 const Redis = require("ioredis");
 const connectRedis = require("connect-redis");
 const session = require("express-session");
+const path = require('path');
 
 
 const { REDIS_OPTIONS } = require("../config/cache");
@@ -32,6 +33,8 @@ server.use(
     store: new RedisStore({ client }),
   })
 );
+
+server.use(express.static(path.join(__dirname, 'client/build')))
 server.use(express.json());
 server.use(
   cors({
