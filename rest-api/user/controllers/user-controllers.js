@@ -1,5 +1,4 @@
 const { User, Profile } = require("../models/user-models");
-const sharp = require('sharp');
 
 async function createUser(req, res) {
   try {
