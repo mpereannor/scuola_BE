@@ -8,8 +8,12 @@ const {
   updatePosition,
 } = require("../controllers/auth-controllers");
 
-router.post("/register", guest, register);
-router.post("/login", guest, login);
+router.post("/register",
+//  guest,
+register);
+router.post("/login",
+//  guest,
+login);
 router.post("/logout", authUser, logout);
 router.get("/home", authUser, home);
 router.put("/position/:id", updatePosition);
