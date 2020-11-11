@@ -4,6 +4,7 @@ const { compare, hash } = require("bcryptjs");
 const validator = require("validator");
 const { BCRYPT_WORK_FACTOR } = require("../../../config/keys");
 
+
 const userSchema = new Schema(
   {
     username: {

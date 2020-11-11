@@ -5,7 +5,10 @@ const {
   loginSchema,
 } = require("../middlewares/auth-validation");
 
-const { logIn, logOut } = require("../middlewares/auth-middleware");
+const { logIn,
+     logOut,
+     authorize
+} = require("../middlewares/auth-middleware");
 const { BadRequest } = require("../../authentication/middlewares/auth-errors");
 
 const ObjectId = require("mongoose").Types.ObjectId;
@@ -18,6 +21,7 @@ async function register(req, res) {
 
     const found = await User.exists({ email });
 
+    //we use incorrect email or password instead of user already exists to make attackers job a bit difficult
     if (found) {
       throw new BadRequest("Incorrect email or password");
     }
@@ -59,8 +63,9 @@ async function login(req, res) {
     }
 
     logIn(req, user.id);
+    // authorize(req, user.position)
 
-    res.status(201).json(user);
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({
       message: "Something went wrong try again",

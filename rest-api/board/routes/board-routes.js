@@ -26,9 +26,28 @@ const {
   getUser
 } = require("../controllers/board-controllers");
 
+const { 
+    authUser,
+    authorize,
+    // authPosition,
+    // position
+ } = require("../../authentication/middlewares/auth-middleware") 
+
+
+ const userPosition = { 
+    ADMIN: 'admin',
+    TUTOR: 'tutor',
+    STUDENT: 'student',
+    GUEST: 'guest'
+}
 //boards
-router.post("/", createBoard);
-router.get("/", getBoards);
+router.post("/",
+ authUser,
+ authorize(userPosition.ADMIN), 
+//  authPosition('admin'),
+ createBoard
+ );
+router.get("/", authUser, getBoards);
 router.get("/:id", getBoard);
 router.patch("/:id", updateBoard);
 router.delete("/:id", archiveBoard);

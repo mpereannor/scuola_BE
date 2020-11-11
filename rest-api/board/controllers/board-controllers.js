@@ -1,5 +1,5 @@
 const { Board, Issue } = require("../models/board-models");
-const { BadRequest } = require("../../authentication/middlewares/auth-errors");
+const { Unauthorized, BadRequest } = require("../../authentication/middlewares/auth-errors");
 
 async function createBoard(req, res) {
   try {

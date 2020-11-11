@@ -15,6 +15,7 @@ class Unauthorized extends Error {
   }
 }
 
+
 //errors
 const notFound = (req, res) => {
   res.status(404).json({ message: "Not Found" });

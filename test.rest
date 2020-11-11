@@ -1,0 +1,13 @@
+# POST http://localhost:7000/api/boards
+POST http://localhost:7000/api/auth/login
+Content-Type: application/json
+
+{ 
+    "email": "deimos@mexico.com",
+    "password" : "muygrande"
+}
+
+# { 
+#     "name": "nicoe super broad",
+#     "description" : "nicoe intensely super broad"
+# }
