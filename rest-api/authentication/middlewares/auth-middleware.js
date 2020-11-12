@@ -17,6 +17,18 @@ const isAdmin = (req) => {
         return true
     } 
 }
+const isTutor = (req) => { 
+    if (req.session.position && req.session.position === userPosition.TUTOR) { 
+        return true
+    } 
+}
+const isStudent = (req) => { 
+    if (req.session.position && req.session.position === userPosition.STUDENT) { 
+        return true
+    } 
+}
+
+
 
 const logIn = (req, userId) => {
     req.session.userId = userId;
@@ -54,9 +66,23 @@ const authUser = (req, res, next) => {
 next();
 };
 
-const authPosition = (req, res, next) => {
+const authAdmin = (req, res, next) => {
     if ( !isAdmin(req)) { 
         throw new Unauthorized("You must have Admin rights");
+    }
+    
+    next();
+}
+const authTutor = (req, res, next) => {
+    if ( !isTutor(req)) { 
+        throw new Unauthorized("You must have Tutor rights");
+    }
+    
+    next();
+}
+const authStudent = (req, res, next) => {
+    if ( !isTutor(req)) { 
+        throw new Unauthorized("You must have Student rights");
     }
     
     next();
@@ -68,6 +94,8 @@ module.exports = {
     logOut, 
     guest, 
     authUser, 
-    authPosition,
+    authAdmin,
+    authTutor,
+    authStudent,
     authorize
 };
