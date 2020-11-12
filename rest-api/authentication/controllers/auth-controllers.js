@@ -63,7 +63,7 @@ async function login(req, res) {
     }
 
     logIn(req, user.id);
-    // authorize(req, user.position)
+    authorize(req, user.position)
 
     res.status(200).json(user);
   } catch (error) {
@@ -74,6 +74,16 @@ async function login(req, res) {
   }
 }
 
+// async function selectPosition( req, res) { 
+//     try {
+//         const { id }  = req.params;
+//         const userPosition = await User.findByIdAndUpdate(id, req.body);
+//         authorize(req, user.position)
+//         res.status(201).json(userPosition)
+//     } catch(eror){ 
+
+//     }
+// }
 async function logout(req, res) {
   try {
     await logOut(req, res);

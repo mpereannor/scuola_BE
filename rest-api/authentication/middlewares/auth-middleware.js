@@ -11,21 +11,17 @@ const userPosition = {
 
 
 const isLoggedIn = (req) => !!req.session.userId;
+const isAdmin = (req) => !!req.session.position
+ && !!req.session.position === userPosition.ADMIN 
 
 const logIn = (req, userId) => {
     req.session.userId = userId;
     req.session.createdAt = Date.now();
 };
 
-
-// const isAdmin = (req) => !! req.session.position
-//  && !!req.session.position === userPosition.ADMIN 
-// {
-
-//     if((req.session.position && req.session.position) === userPosition.ADMIN){
-//         return true
-//     } 
-// } 
+const authorize = (req, position,) => {
+    req.session.position = position;      
+}
 
 const logOut = (req, res) => {
   new Promise((resolve, reject) => {
@@ -37,14 +33,6 @@ const logOut = (req, res) => {
   });
 };
 
-const authorize = (req, res, next, position) => {
-    // req.session.position = position;
-    if(position.length && !position.includes(req.user.position)){
-        throw new Unauthorized("You must be have Admin rights");
-    }
-    next();
-        
-}
 
 //middlewares
 const guest = (req, res, next) => {
@@ -62,13 +50,13 @@ const authUser = (req, res, next) => {
 next();
 };
 
-// const authPosition = (req, res, next) => {
-//     if ( !isAdmin(req)) { 
-//         throw new Unauthorized("You must be have Admin rights");
-//     }
+const authPosition = (req, res, next) => {
+    if ( !isAdmin(req)) { 
+        throw new Unauthorized("You must be have Admin rights");
+    }
     
-//     next();
-// }
+    next();
+}
 
 module.exports = { 
     isLoggedIn, 
@@ -76,6 +64,6 @@ module.exports = {
     logOut, 
     guest, 
     authUser, 
-    // authPosition,
+    authPosition,
     authorize
 };

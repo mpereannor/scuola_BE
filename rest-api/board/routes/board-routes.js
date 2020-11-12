@@ -29,7 +29,7 @@ const {
 const { 
     authUser,
     authorize,
-    // authPosition,
+    authPosition,
     // position
  } = require("../../authentication/middlewares/auth-middleware") 
 
@@ -43,8 +43,7 @@ const {
 //boards
 router.post("/",
  authUser,
- authorize(userPosition.ADMIN), 
-//  authPosition('admin'),
+ authPosition, 
  createBoard
  );
 router.get("/", authUser, getBoards);
