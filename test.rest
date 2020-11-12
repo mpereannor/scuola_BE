@@ -14,22 +14,21 @@
 
 
 
-POST http://localhost:7000/api/auth/register
-# POST http://localhost:7000/api/auth/login
+# POST http://localhost:7000/api/auth/register
+POST http://localhost:7000/api/auth/login
 # POST http://localhost:7000/api/auth/logout
 
 Content-Type: application/json
 
-# { 
-#     "email": "gerald@kenneth.com",
-#     "password" : "ygakenneth"
-# }
-
 { 
-    "username": "kenneth",
-    "fullname": "Gerald Kenneth",
     "email": "gerald@kenneth.com",
-    "password" : "ygakenneth",
-    "passwordConfirmation" : "ygakenneth",
-    "position" : "admin"
+    "password" : "ygakenneth"
 }
+
+# { 
+#     "username": "kenneth",
+#     "fullname": "Gerald Kenneth",
+#     "email": "gerald@kenneth.com",
+#     "password" : "ygakenneth",
+#     "passwordConfirmation" : "ygakenneth"
+# }

@@ -11,8 +11,12 @@ const userPosition = {
 
 
 const isLoggedIn = (req) => !!req.session.userId;
-const isAdmin = (req) => !!req.session.position
- && !!req.session.position === userPosition.ADMIN 
+
+const isAdmin = (req) => { 
+    if (req.session.position && req.session.position === userPosition.ADMIN) { 
+        return true
+    } 
+}
 
 const logIn = (req, userId) => {
     req.session.userId = userId;
@@ -52,7 +56,7 @@ next();
 
 const authPosition = (req, res, next) => {
     if ( !isAdmin(req)) { 
-        throw new Unauthorized("You must be have Admin rights");
+        throw new Unauthorized("You must have Admin rights");
     }
     
     next();

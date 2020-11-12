@@ -32,14 +32,7 @@ const {
     authPosition,
     // position
  } = require("../../authentication/middlewares/auth-middleware") 
-
-
- const userPosition = { 
-    ADMIN: 'admin',
-    TUTOR: 'tutor',
-    STUDENT: 'student',
-    GUEST: 'guest'
-}
+ 
 //boards
 router.post("/",
  authUser,

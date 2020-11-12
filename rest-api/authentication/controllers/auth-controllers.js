@@ -63,7 +63,7 @@ async function login(req, res) {
     }
 
     logIn(req, user.id);
-    authorize(req, user.position)
+    // authorize(req, user.position)
 
     res.status(200).json(user);
   } catch (error) {
@@ -76,6 +76,7 @@ async function login(req, res) {
 
 // async function selectPosition( req, res) { 
 //     try {
+    // 5fad61b39c6add31a8835e00
 //         const { id }  = req.params;
 //         const userPosition = await User.findByIdAndUpdate(id, req.body);
 //         authorize(req, user.position)
@@ -123,6 +124,7 @@ async function updatePosition(req, res) {
       { $set: { position: position } },
       { new: true }
     );
+    authorize(req, position)
     res.status(201).json(updatedPosition);
   } catch (error) {
     res.status(500).json({
