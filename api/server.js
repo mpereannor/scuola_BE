@@ -38,7 +38,7 @@ server.use(
   cors({
     credentials: true,
     origin: "http://localhost:3000",
-    "Access-Control-Allow-Headers": true,
+    "Access-Control-Allow-Headers": "Authorization",
     "Access-Control-Allow-Credentials": true,
   })
 );
