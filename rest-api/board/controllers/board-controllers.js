@@ -52,12 +52,12 @@ async function getBoardByBoardId(req, res) {
     try{ 
         const board = await Board.findById(boardId);
         if(!board){ 
-            notFound
+            notFound();
         }
-        success(board)
+        success(board);
     }
     catch(error){
-        serverError(error)
+        serverError(error);
     }
 }
 
@@ -157,14 +157,29 @@ async function getUser(req, res) {
         const { id } = req.params;
         const board = await Board.findById(id).populate('user');
         const user = board.user;
-        res.status(200).json(user)
+        res.status(200).json(user);
     } catch (error) {
         res.status(500).json({
             message: `something went wrong retrieving board user, try again later!
             ${error.message}`
-         })
+         });
     }
 
+}
+
+async function getBoardsByCreator(req, res) { 
+    try{ 
+        const { user_id } = req.params;
+        const { board_id } = req.query;
+        const boards = await Board.findById(user_id).sort({ 
+            createdAt: 1
+        });
+        res.status(201).json(boards);
+    } catch(error) { 
+        res.status(500).json({ 
+            message: "something went wrong getting boards created by this user, try again later"
+        })
+    }
 }
 
 
@@ -396,6 +411,7 @@ module.exports = {
   getBoards,
   getBoard,
   getBoardByBoardId,
+  getBoardsByCreator,
   updateBoard,
   archiveBoard,
   createGroupInBoard,

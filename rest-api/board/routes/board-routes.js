@@ -4,6 +4,7 @@ const {
   createBoard,
   getBoards,
   getBoard,
+  getBoardsByCreator,
   updateBoard,
   archiveBoard,
 
@@ -23,7 +24,8 @@ const {
   linkReportToBoard,
   getBoardReports,
   addUser, 
-  getUser
+  getUser,
+  getBoardByBoardId
 } = require("../controllers/board-controllers");
 
 const { 
@@ -39,6 +41,8 @@ router.post("/",
  );
 router.get("/", authUser, getBoards);
 router.get("/:id", getBoard);
+router.get("/:id", getBoardByBoardId);
+router.get("/:user_userId", getBoardsByCreator);
 router.patch("/:id", updateBoard);
 router.delete("/:id", archiveBoard);
 router.patch('/:id/reports/:report_id', linkReportToBoard );
