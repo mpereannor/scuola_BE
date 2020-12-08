@@ -1,6 +1,14 @@
 const { Board, Issue } = require("../models/board-models");
-const { Unauthorized, BadRequest } = require("../../authentication/middlewares/auth-errors");
+// const { Unauthorized, BadRequest, notFound, serverError} = require("../../authentication/middlewares/auth-errors");
 const { authorize } = require('../../authentication/middlewares/auth-middleware')
+const { 
+    Unauthorized,
+    BadRequest,
+    notFound,
+    serverError,
+    created,
+    success
+} = require("../../globals");
 
 async function createBoard(req, res) {
   try {
@@ -38,7 +46,20 @@ async function getBoard(req, res) {
   }
 }
 
+async function getBoardByBoardId(req, res) {
+    const { boardId } = req.query;
 
+    try{ 
+        const board = await Board.findById(boardId);
+        if(!board){ 
+            notFound
+        }
+        success(board)
+    }
+    catch(error){
+        serverError(error)
+    }
+}
 
 async function updateBoard(req, res) {
   try {
@@ -374,6 +395,7 @@ module.exports = {
   createBoard,
   getBoards,
   getBoard,
+  getBoardByBoardId,
   updateBoard,
   archiveBoard,
   createGroupInBoard,
