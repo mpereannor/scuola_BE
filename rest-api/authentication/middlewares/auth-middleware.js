@@ -1,3 +1,4 @@
+const { reject } = require("lodash");
 const { SESSION_NAME } = require("../../../config/session");
 const { BadRequest, Unauthorized } = require("../middlewares/auth-errors");
 
@@ -38,6 +39,16 @@ const logIn = (req, userId) => {
 const authorize = (req, position,) => {
     req.session.position = position;      
 }
+
+// const authorize = (req, position) =>{ 
+//     new Promise((resolve, reject) => { 
+//         req.session.reload((err) => { 
+//             if(err) reject(err);
+//             req.session.position = position;
+//             resolve();
+//         });
+//     });
+// }
 
 const logOut = (req, res) => {
   new Promise((resolve, reject) => {
@@ -81,7 +92,7 @@ const authTutor = (req, res, next) => {
     next();
 }
 const authStudent = (req, res, next) => {
-    if ( !isTutor(req)) { 
+    if ( !isStudent(req)) { 
         throw new Unauthorized("You must have Student rights");
     }
     

@@ -28,13 +28,13 @@ const {
 
 const { 
     authUser,
-    authAdmin,
+    // authAdmin,
  } = require("../../authentication/middlewares/auth-middleware") 
 
 //boards
 router.post("/",
  authUser,
- authAdmin, 
+//  authAdmin, 
  createBoard
  );
 router.get("/", authUser, getBoards);

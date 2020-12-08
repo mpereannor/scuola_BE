@@ -1,9 +1,12 @@
 const { Board, Issue } = require("../models/board-models");
 const { Unauthorized, BadRequest } = require("../../authentication/middlewares/auth-errors");
+const { authorize } = require('../../authentication/middlewares/auth-middleware')
 
 async function createBoard(req, res) {
   try {
     const board = await Board.create(req.body);
+    // const position  = req.session.position;
+    // authorize(req, position);
     res.status(201).json(board);
   } catch (error) {
     res.status(500).json({
@@ -34,6 +37,8 @@ async function getBoard(req, res) {
     });
   }
 }
+
+
 
 async function updateBoard(req, res) {
   try {

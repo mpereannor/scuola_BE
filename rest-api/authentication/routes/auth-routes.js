@@ -12,5 +12,7 @@ router.post("/register", guest, register);
 router.post("/login", guest, login);
 router.post("/logout", authUser, logout);
 router.get("/home", authUser, home);
-router.patch("/position/:id", updatePosition);
+// router.patch("/:id/position/", updatePosition);
+router.patch("/:id", updatePosition);
+// router.patch("/:id/position/", updatePosition);
 module.exports = router;

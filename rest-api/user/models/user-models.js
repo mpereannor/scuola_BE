@@ -40,6 +40,13 @@ const userSchema = new Schema(
       //       }
       //   }
     },
+    // position: {
+    //   type: { 
+    //       type: String
+    //   },
+    //   enum: ["guest", "admin", "tutor", "student"],
+    //   default: "guest",
+    // },
     position: {
       type: String,
       enum: ["guest", "admin", "tutor", "student"],
@@ -58,9 +65,9 @@ const profileSchema = new Schema(
     image: {
       type: String,
     },
-    avatar: { 
-        type: Buffer
-    },
+    // avatar: { 
+    //     type: Buffer
+    // },
     age: {
       type: Number,
     },

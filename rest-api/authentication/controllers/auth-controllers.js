@@ -21,7 +21,7 @@ async function register(req, res) {
 
     const found = await User.exists({ email });
 
-    //we use incorrect email or password instead of user already exists to make attackers job a bit difficult
+    //incorrect email or password instead of user already exists to make attackers job a bit difficult
     if (found) {
       throw new BadRequest("Incorrect email or password");
     }
@@ -34,8 +34,7 @@ async function register(req, res) {
     });
 
     res.status(201).json(user);
-
-    // logIn(req, user.id);
+    logIn(req, user.id);
   } catch (error) {
     res.status(500).json({
       message: "Something went wrong try again",
@@ -61,10 +60,8 @@ async function login(req, res) {
     if (!user.matchesPassword) {
       throw new BadRequest("Incorrect email or password");
     }
-
+    
     logIn(req, user.id);
-    // authorize(req, user.position)
-
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({
@@ -74,17 +71,6 @@ async function login(req, res) {
   }
 }
 
-// async function selectPosition( req, res) { 
-//     try {
-    // 5fad61b39c6add31a8835e00
-//         const { id }  = req.params;
-//         const userPosition = await User.findByIdAndUpdate(id, req.body);
-//         authorize(req, user.position)
-//         res.status(201).json(userPosition)
-//     } catch(eror){ 
-
-//     }
-// }
 async function logout(req, res) {
   try {
     await logOut(req, res);
@@ -115,16 +101,16 @@ async function updatePosition(req, res) {
   const { id } = req.params;
 
   try {
-    const { position } = req.body;
-    if (options.includes(position) === false) {
-      throw new BadRequest("Incorrect position");
-    }
+    const newPosition  = req.body;
+    // if (options.includes(position) === false) {
+    //   throw new BadRequest("Incorrect position");
+    // }
     const updatedPosition = await User.findOneAndUpdate(
       { _id: ObjectId(id) },
-      { $set: { position: position } },
+      { $set: { position: newPosition } },
       { new: true }
     );
-    authorize(req, position)
+    // authorize(req, position)
     res.status(201).json(updatedPosition);
   } catch (error) {
     res.status(500).json({

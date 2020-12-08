@@ -19,16 +19,22 @@ const {
 const { 
     upload
 } = require('../middlewares/user-middlewares')
+
+const { 
+    updatePosition
+} = require("../../authentication/controllers/auth-controllers");
+
 router.post("/", createUser);
 router.get("/", authUser, getUsers);
 router.get("/:id", getUser);
 router.patch("/:id", updateUser);
 router.put("/:id", replaceUser);
 router.delete("/:id", deleteUser);
-
-router.post("/:id/profile", createUserProfile);
+router.put("/:id/profile", createUserProfile);
 router.get("/:id/profile", getUserProfile);
 router.get('/profile/:id/avatar', displayAvatar);
+
+router.patch("/:id/position/", updatePosition)
 
 //avatar
 router.post('/profile/:id/avatar', upload.single('avatar'), uploadAvatar);
