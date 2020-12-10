@@ -46,20 +46,20 @@ async function getBoard(req, res) {
   }
 }
 
-async function getBoardByBoardId(req, res) {
-    const { boardId } = req.query;
+// async function getBoardByBoardId(req, res) {
+//     const { boardId } = req.query;
 
-    try{ 
-        const board = await Board.findById(boardId);
-        if(!board){ 
-            notFound();
-        }
-        success(board);
-    }
-    catch(error){
-        serverError(error);
-    }
-}
+//     try{ 
+//         const board = await Board.findById(boardId);
+//         if(!board){ 
+//             notFound();
+//         }
+//         success(board);
+//     }
+//     catch(error){
+//         serverError(error);
+//     }
+// }
 
 async function updateBoard(req, res) {
   try {
@@ -169,9 +169,9 @@ async function getUser(req, res) {
 
 async function getBoardsByCreator(req, res) { 
     try{ 
-        const { user_id } = req.params;
+        const { userId } = req.session;
         const { board_id } = req.query;
-        const boards = await Board.findById(user_id).sort({ 
+        const boards = await Board.findById(userId, board_id).sort({ 
             createdAt: 1
         });
         res.status(201).json(boards);
@@ -410,7 +410,7 @@ module.exports = {
   createBoard,
   getBoards,
   getBoard,
-  getBoardByBoardId,
+//   getBoardByBoardId,
   getBoardsByCreator,
   updateBoard,
   archiveBoard,
