@@ -1,5 +1,8 @@
 const { Board, Issue } = require("../models/board-models");
+const { User } = require("../../user/models/user-models");
 // const { Unauthorized, BadRequest, notFound, serverError} = require("../../authentication/middlewares/auth-errors");
+const ObjectId = require("mongoose").Types.ObjectId;
+
 const { authorize } = require('../../authentication/middlewares/auth-middleware')
 const { 
     Unauthorized,
@@ -169,11 +172,36 @@ async function getUser(req, res) {
 
 async function getBoardsByCreator(req, res) { 
     try{ 
-        const { userId } = req.session;
-        const { board_id } = req.query;
-        const boards = await Board.findById(userId, board_id).sort({ 
-            createdAt: 1
-        });
+        const userId = req.session.userId;
+        // const { userId } = req.params;
+        // const userId = req.user._id; 
+        // const { board_id } = req.query;
+        const boards = await User.aggregate([
+            { 
+                $match: { 
+                    _id: userId
+                }
+            },
+            { 
+                $lookup: {
+                    from: "Board",
+                    localField: "_id",
+                    foreignField: "creator",
+                    as: "Board"
+                }
+            }
+            // Board.find(
+        // const boards = await Board.find(
+            // {
+                // 'creator._id' : userId
+            // },
+        //     //  board_id
+        ]    
+        );
+            //  .sort({ 
+                //  createdAt: 1
+            //  })
+            //  .populate('creator')
         res.status(201).json(boards);
     } catch(error) { 
         res.status(500).json({ 

@@ -40,9 +40,9 @@ router.post("/",
  createBoard
  );
 router.get("/", authUser, getBoards);
-router.get("/:id", getBoard);
+// router.get("/:id", getBoard);
 // router.get("/:id", getBoardByBoardId);
-router.get("/:user_boards", getBoardsByCreator);
+router.get("/user_boards", authUser, getBoardsByCreator);
 router.patch("/:id", updateBoard);
 router.delete("/:id", archiveBoard);
 router.patch('/:id/reports/:report_id', linkReportToBoard );
