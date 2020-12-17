@@ -15,8 +15,15 @@ const {
 
 async function createBoard(req, res) {
   try {
+    const defaultGroup = { title: 'New Group'};
+    const defaultIssue = { 
+         summary: 'issue summary',
+        status: 'unresolved',
+    };
     const userId = req.session.userId;
     const board = await Board.create(req.body);
+    await board.groups.push(defaultGroup);
+    await board.groups[0].issue.push(defaultIssue);
     const creator = await User.findById(userId);
     board.creator = creator._id;
     await board.save();
@@ -25,6 +32,7 @@ async function createBoard(req, res) {
     res.status(201).json(board);
   } catch (error) {
     res.status(500).json({
+        error,
       message: "something went wrong creating board, try again later!",
     });
   }
@@ -52,6 +60,30 @@ async function getBoard(req, res) {
     });
   }
 }
+
+async function getBoardsByCreator(req, res) {
+    try {
+      const userId = req.session.userId;
+      const boards = await Board.find({
+        creator: userId,
+      })
+      .sort({ createdAt: -1 })
+      .populate({ 
+          path: 'groups',
+        //   populate: { 
+        //       path: 'issues'
+        //   }
+      })
+      ;
+      res.status(200).json(boards);
+    } catch (error) {
+      res.status(500).json({
+        message:
+          "something went wrong getting boards created by this user, try again later",
+      });
+    }
+  }
+
 
 // async function getBoardByBoardId(req, res) {
 //     const { boardId } = req.query;
@@ -168,20 +200,7 @@ async function getUser(req, res) {
   }
 }
 
-async function getBoardsByCreator(req, res) {
-  try {
-    const userId = req.session.userId;
-    const boards = await Board.find({
-      creator: userId,
-    }).sort({ createdAt: 1 });
-    res.status(200).json(boards);
-  } catch (error) {
-    res.status(500).json({
-      message:
-        "something went wrong getting boards created by this user, try again later",
-    });
-  }
-}
+
 
 //groups
 async function createGroupInBoard(req, res) {
