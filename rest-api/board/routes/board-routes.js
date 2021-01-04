@@ -4,6 +4,7 @@ const {
   createBoard,
   getBoards,
   getBoard,
+  getBoardByCreator,
   getBoardsByCreator,
   updateBoard,
   archiveBoard,
@@ -40,9 +41,10 @@ router.post("/",
  createBoard
  );
 router.get("/", authUser, getBoards);
-// router.get("/:id", getBoard);
+// router.get("/:boardId", authUser, getBoard);
 // router.get("/:id", getBoardByBoardId);
 router.get("/user_boards", authUser, getBoardsByCreator);
+router.get("/user_boards/:boardId", authUser, getBoardByCreator);
 router.patch("/:id", updateBoard);
 router.delete("/:id", archiveBoard);
 router.patch('/:id/reports/:report_id', linkReportToBoard );
@@ -51,7 +53,8 @@ router.patch('/:id/user/:user_id', addUser);
 router.get('/:id/user', getUser)
 
 //groups
-router.post("/:id/groups", createGroupInBoard);
+router.post("/user_boards/:boardId", authUser, createGroupInBoard);
+// router.post("/:boardId/groups", authUser, createGroupInBoard);
 router.get("/:id/groups", getGroupsInBoard);
 router.get("/:id/groups/:group_id", getGroupInBoard);
 router.patch("/:id/groups/:group_id", updateGroupInBoard);

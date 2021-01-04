@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-
+const bodyParser = require("body-parser");
 const server = express();
 const dbConnect = require("../config/db");
 
@@ -33,16 +33,17 @@ server.use(
   })
 );
 
-server.use(express.json());
+server.use(bodyParser.json());
+// server.use(express.json());
 server.use(
   cors({
-    credentials: true,
-    origin: "http://localhost:3000",
+    "credentials": true,
+    "origin": "http://localhost:3000",
     "Access-Control-Allow-Headers": "Authorization",
+    "Access-Control-Allow-Origin" : "http://localhost:3000",
     "Access-Control-Allow-Credentials": true,
   })
 );
-server.set("trust proxy", 1);
 
 //routes use
 server.use("/api/users", userRoute);
@@ -56,3 +57,13 @@ server.get("/", (req, res) => {
 });
 
 module.exports = server;
+
+
+
+// var express = require('express');
+// var app = express();
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//   next();
+// });

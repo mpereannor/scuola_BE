@@ -39,6 +39,7 @@ async function createBoard(req, res) {
 }
 
 async function getBoards(req, res) {
+    
   try {
     const boards = await Board.find({});
     res.status(200).json(boards);
@@ -50,9 +51,9 @@ async function getBoards(req, res) {
 }
 
 async function getBoard(req, res) {
-  const { id } = req.params;
+  const { boardId } = req.params;
   try {
-    const board = await Board.findById(id);
+    const board = await Board.findById(boardId);
     res.status(200).json(board);
   } catch (error) {
     res.status(500).json({
@@ -65,17 +66,17 @@ async function getBoardsByCreator(req, res) {
     try {
       const userId = req.session.userId;
       const boards = await Board.find({
-        creator: userId,
+        creator: userId
       })
       .sort({ createdAt: -1 })
       .populate({ 
           path: 'groups',
-        //   populate: { 
-        //       path: 'issues'
-        //   }
       })
       ;
-      res.status(200).json(boards);
+      res.status(200).json({ 
+          boards
+      }
+          );
     } catch (error) {
       res.status(500).json({
         message:
@@ -84,21 +85,19 @@ async function getBoardsByCreator(req, res) {
     }
   }
 
-
-// async function getBoardByBoardId(req, res) {
-//     const { boardId } = req.query;
-
-//     try{
-//         const board = await Board.findById(boardId);
-//         if(!board){
-//             notFound();
-//         }
-//         success(board);
-//     }
-//     catch(error){
-//         serverError(error);
-//     }
-// }
+async function getBoardByCreator(req, res) {
+    try {
+      const { boardId} = req.params;
+      const board = await Board.findById(boardId)
+      .populate({ path: 'groups' });
+      res.status(200).json(board);
+    } catch (error) {
+      res.status(500).json({
+        message:
+          "something went wrong getting board created by this user, try again later",
+      });
+    }
+  }
 
 async function updateBoard(req, res) {
   try {
@@ -205,9 +204,9 @@ async function getUser(req, res) {
 //groups
 async function createGroupInBoard(req, res) {
   try {
-    const targetBoard = await Board.findById(req.params.id);
+    const targetBoard = await Board.findById(req.params.boardId);
     targetBoard.groups.push({
-      title: req.body.title,
+      title: req.body,
     });
     const createdGroup = await targetBoard.save();
     res.status(201).json(createdGroup);
@@ -423,7 +422,7 @@ module.exports = {
   createBoard,
   getBoards,
   getBoard,
-  //   getBoardByBoardId,
+  getBoardByCreator,
   getBoardsByCreator,
   updateBoard,
   archiveBoard,

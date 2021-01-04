@@ -4,7 +4,6 @@ const { compare, hash } = require("bcryptjs");
 const validator = require("validator");
 const { BCRYPT_WORK_FACTOR } = require("../../../config/keys");
 
-
 const userSchema = new Schema(
   {
     username: {
@@ -40,13 +39,6 @@ const userSchema = new Schema(
       //       }
       //   }
     },
-    // position: {
-    //   type: { 
-    //       type: String
-    //   },
-    //   enum: ["guest", "admin", "tutor", "student"],
-    //   default: "guest",
-    // },
     position: {
       type: String,
       enum: ["guest", "admin", "tutor", "student"],
@@ -65,7 +57,7 @@ const profileSchema = new Schema(
     image: {
       type: String,
     },
-    // avatar: { 
+    // avatar: {
     //     type: Buffer
     // },
     age: {

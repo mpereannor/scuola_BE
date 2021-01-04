@@ -81,8 +81,13 @@ async function createUserProfile(req, res) {
     const { id } = req.params;
     const profile = req.body;
     const userProfile = await Profile.create(profile);
-    const user = await User.findById(id);
-    user.profile = userProfile._id;
+    const user = await User.findByIdAndUpdate(id,
+        { 
+            $push: { profile: userProfile._id}
+        }
+    );
+    // user.profile = userProfile._id;
+    // user.profile.push(userProfile._id);
     await user.save();
     res.status(201).json(user);
   } catch (error) {
