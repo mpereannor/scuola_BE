@@ -1,5 +1,5 @@
 const { IN_PROD, TESTING } = require("./keys");
-const uuid = require("uuid/v4");
+const { v4 : uuidv4 } = require("uuid");
 
 const HALF_HOUR = 1000 * 60 * 30;
 const ONE_HOUR = 1000 * 60 * 60;
@@ -26,7 +26,7 @@ const SESSION_OPTIONS = {
   resave: false,
   saveUninitialized: false,
   genid: (req) => { 
-      return uuid()
+      return uuidv4()
   }
 };
 
