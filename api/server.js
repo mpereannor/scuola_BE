@@ -38,9 +38,9 @@ server.use(bodyParser.json());
 server.use(
   cors({
     "credentials": true,
-    "origin": "http://localhost:3000",
+    "origin": ["http://localhost:3000", "https://scuola.netlify.app"],
     "Access-Control-Allow-Headers": "Authorization",
-    "Access-Control-Allow-Origin" : "http://localhost:3000",
+    "Access-Control-Allow-Origin" : ["http://localhost:3000", "https://scuola.netlify.app"],
     "Access-Control-Allow-Credentials": true,
   })
 );
