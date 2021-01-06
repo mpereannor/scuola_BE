@@ -1,4 +1,5 @@
 const { IN_PROD, TESTING } = require("./keys");
+const uuid = require("uuid/v4");
 
 const HALF_HOUR = 1000 * 60 * 30;
 const ONE_HOUR = 1000 * 60 * 60;
@@ -24,6 +25,9 @@ const SESSION_OPTIONS = {
   rolling: true,
   resave: false,
   saveUninitialized: false,
+  genid: (req) => { 
+      return uuid()
+  }
 };
 
 module.exports = { SESSION_OPTIONS, SESSION_NAME, SESSION_ABSOLUTE_TIMEOUT };
