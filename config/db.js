@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
+const uri = process.env.MONGODB_URI;
 
 mongoose.set("useCreateIndex", true);
 
 const dbConnect = async () => {
-  //const connection = await mongoose.connect(process.env.MONGO_URI, {
-  const connection =  await mongoose.connect("mongodb+srv://schooladmin:schooladmin@cluster0-ad7kr.mongodb.net/scuola?retryWrites=true&w=majority",{ 
+    const connection = await mongoose.connect(uri,{
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
