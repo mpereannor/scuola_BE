@@ -40,15 +40,7 @@ const authorize = (req, position,) => {
     req.session.position = position;      
 }
 
-// const authorize = (req, position) =>{ 
-//     new Promise((resolve, reject) => { 
-//         req.session.reload((err) => { 
-//             if(err) reject(err);
-//             req.session.position = position;
-//             resolve();
-//         });
-//     });
-// }
+
 
 const logOut = (req, res) => {
   new Promise((resolve, reject) => {
