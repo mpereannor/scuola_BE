@@ -20,11 +20,11 @@ const SESSION_OPTIONS = {
     // secure: IN_PROD,
     secure: false,
     // sameSite: true,
-    sameSite: false,
+    sameSite: 'none',
   },
   rolling: true,
   resave: false,
-  saveUninitialized: false,
+  saveUninitialized: true,
   genid: (req) => { 
       return uuidv4()
   }

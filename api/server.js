@@ -2,8 +2,10 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require("body-parser");
+
 const server = express();
+server.set('trust proxy', 1);
+
 const dbConnect = require("../config/db");
 
 const Redis = require("ioredis");
