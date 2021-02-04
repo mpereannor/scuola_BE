@@ -23,7 +23,8 @@ const updateRoute = require("../rest-api/update/routes/update-routes");
 
 dbConnect();
 const RedisStore = connectRedis(session);
-const client = new Redis(REDIS_OPTIONS);
+// const client = new Redis(REDIS_OPTIONS);
+const client = new Redis(process.env.REDIS_URL);
 
 
 server.use(
@@ -33,8 +34,8 @@ server.use(
   })
 );
 
-server.use(bodyParser.json());
-// server.use(express.json());
+// server.use(bodyParser.json());
+server.use(express.json());
 server.use(
   cors({
     "credentials": true,
@@ -59,11 +60,3 @@ server.get("/", (req, res) => {
 module.exports = server;
 
 
-
-// var express = require('express');
-// var app = express();
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
