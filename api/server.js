@@ -25,8 +25,8 @@ const updateRoute = require("../rest-api/update/routes/update-routes");
 
 dbConnect();
 const RedisStore = connectRedis(session);
-// const client = new Redis(REDIS_OPTIONS);
-const client = new Redis(process.env.REDIS_URL);
+const client = new Redis(REDIS_OPTIONS);
+// const client = new Redis(process.env.REDIS_URL);
 
 
 server.use(
