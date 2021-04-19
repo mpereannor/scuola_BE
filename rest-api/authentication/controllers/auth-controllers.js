@@ -10,7 +10,8 @@ const {
 } = require("../middlewares/auth-validation");
 
 let refreshTokens = [];
-const generateAccessToken = user =>  jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30000s'});
+const generateAccessToken = user =>  jwt.sign({user}, `${process.env.ACCESS_TOKEN_SECRET}`, { expiresIn: '1h'});
+// const generateAccessToken = user =>  jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h'});
 // const generateRefreshToken = user =>  jwt.sign({user}, process.env.REFRESH_TOKEN_SECRET);
 
 
