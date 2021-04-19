@@ -6,7 +6,6 @@ const {
   PASSWORD_RESET_BYTES,
 } = require("../../../config/keys");
 
-const id = Joi.objectId().required();
 const username = Joi.string().min(3).max(128).trim().required();
 const fullname = Joi.string().min(3).max(128).trim().required();
 const email = Joi.string()
@@ -28,6 +27,7 @@ const registerSchema = Joi.object({
 });
 
 const loginSchema = Joi.object({
+  username,
   email,
   password,
 });

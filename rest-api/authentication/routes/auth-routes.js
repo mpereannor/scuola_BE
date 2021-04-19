@@ -1,18 +1,23 @@
 const router = require("express").Router();
-const { guest, authUser } = require("../middlewares/auth-middleware");
+// const { guest, authUser } = require("../middlewares/auth-middleware");
 const {
   register,
   login,
+  createToken,
   logout,
-  home,
-  updatePosition,
+  
+//   home,
+//   updatePosition,
+//   authenticateToken
 } = require("../controllers/auth-controllers");
 
-router.post("/register", guest, register);
-router.post("/login", guest, login);
-router.post("/logout", authUser, logout);
-router.get("/home", authUser, home);
+router.post("/register", register);
+router.post("/login", login);
+router.post("/token", createToken);
+router.delete("/logout", logout)
+// router.post("/logout", authUser, logout);
+// router.get("/home", authUser, home);
 // router.patch("/:id/position/", updatePosition);
-router.patch("/:id", updatePosition);
+// router.patch("/:id", updatePosition);
 // router.patch("/:id/position/", updatePosition);
 module.exports = router;

@@ -1,17 +1,35 @@
+require('dotenv').config()
 const { User } = require("../../user/models/user-models");
+const jwt = require("jsonwebtoken");
+const { BadRequest, Unauthorized } = require("../middlewares/auth-errors");
+
 
 const {
   registerSchema,
   loginSchema,
 } = require("../middlewares/auth-validation");
 
-const { logIn,
-     logOut,
-     authorize
-} = require("../middlewares/auth-middleware");
-const { BadRequest } = require("../../authentication/middlewares/auth-errors");
+let refreshTokens = [];
+const generateAccessToken = user =>  jwt.sign({user}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30000s'});
+// const generateRefreshToken = user =>  jwt.sign({user}, process.env.REFRESH_TOKEN_SECRET);
 
-const ObjectId = require("mongoose").Types.ObjectId;
+
+
+async function createToken(req, res) { 
+    const refreshToken = req.body.token;
+    if (refreshToken == null) return res.status(401);
+    if(!refreshTokens.includes(refreshToken)) return res.status(403);
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, username) => { 
+        if(err) return res.status(403);
+        const accessToken = generateAccessToken({username});
+        res.json(accessToken)
+    })
+}
+
+async function logout(req, res) {
+    const refreshTokens = refreshTokens.filter(token => token !== req.body.token)
+    res.sendStatus(204)
+}
 
 async function register(req, res) {
   try {
@@ -21,9 +39,18 @@ async function register(req, res) {
 
     const found = await User.exists({ email });
 
-    //incorrect email or password instead of user already exists to make attackers job a bit difficult
     if (found) {
-      throw new BadRequest("Incorrect email or password");
+        try{
+            const userData = await User.findOne({email})
+            const token = generateAccessToken(password);
+            res.status(201).json({
+                message: `Welcome ${username}`,
+                token,
+                user: userData
+            });
+         } catch (error){ 
+             res.status(500).json(`Account registered, but error retrieving user details`)
+        }
     }
 
     const user = await User.create({
@@ -33,12 +60,14 @@ async function register(req, res) {
       password,
     });
 
-    logIn(req, user.id);
-    res.status(201).json(user);
+    res.status(201).json(
+        {
+            message: `Account successfully registered, Welcome ${username}`,
+            user
+        });
   } catch (error) {
     res.status(500).json({
-      message: "Something went wrong try again",
-      error,
+      message: `Unable to register account, try again${error.message}`,
     });
   }
 }
@@ -48,76 +77,80 @@ async function login(req, res) {
     await loginSchema.validateAsync(req.body, {
       abortEarly: false,
     });
+    const { username, email } =  req.body;
 
-    const { email, password } = req.body;
 
     const user = await User.findOne({ email });
 
     if (user.length === 0) {
-      throw new BadRequest("Incorrect email or password");
+        res.status(401).json({ 
+            message: `Email or password is incorrect`
+        })
     }
 
     if (!user.matchesPassword) {
-      throw new BadRequest("Incorrect email or password");
+        res.status(401).json({
+            message: `Email or password is incorrect`
+        })
     }
-    
-    logIn(req, user.id);
-    res.status(200).json(user);
+
+    const token = generateAccessToken({username});
+    // const accessToken = generateAccessToken({username});
+    // const refreshToken = generateRefreshToken({username});
+    // refreshTokens.push(refreshToken);
+    res.status(200).json({
+        message: `Welcome back ${user.username}!`,
+        token,
+        user
+    });
+    // res.status(201).json({accessToken,refreshToken});
   } catch (error) {
     res.status(500).json({
-      message: "Something went wrong try again",
-      error,
+      message: `Unable to login ${error.message}`,
     });
   }
 }
 
-async function logout(req, res) {
-  try {
-    await logOut(req, res);
-    res.status(201).json("successfully logged out");
-  } catch (error) {
-    res.status(500).json({
-      message: "Something went wrong try again",
-      error,
-    });
-  }
+
+const authenticateToken = ( req, res, next) => { 
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if(token === null) return res.status(401)
+
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => { 
+        if(err) return res.status(403);
+        req.user = user
+        next()
+    })
 }
 
-async function home(req, res) {
-  try {
-    const user = await User.findById(req.session.userId);
-    res.status(201).json(user);
-  } catch (error) {
-    res.status(500).json({
-      message: "Something went wrong try again",
-      error,
-    });
-  }
-}
 
-async function updatePosition(req, res) {
-  const options = ["guest", "admin", "student", "tutor"];
 
-  const { id } = req.params;
+//an example of userAuthorization 
+// app.get('/posts', authenticateToken, (req, res) => {
+//     res.json(posts.filter(post => post.username === req.user.name))
+//   })
+  
+//   function authenticateToken(req, res, next) {
+//     const authHeader = req.headers['authorization']
+//     const token = authHeader && authHeader.split(' ')[1]
+//     if (token == null) return res.sendStatus(401)
+  
+//     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+//       console.log(err)
+//       if (err) return res.sendStatus(403)
+//       req.user = user
+//       next()
+//     })
+//   }
+  
 
-  try {
-    const newPosition  = req.body;
-    // if (options.includes(position) === false) {
-    //   throw new BadRequest("Incorrect position");
-    // }
-    const updatedPosition = await User.findOneAndUpdate(
-      { _id: ObjectId(id) },
-      { $set: { position: newPosition } },
-      { new: true }
-    );
-    // authorize(req, position)
-    res.status(201).json(updatedPosition);
-  } catch (error) {
-    res.status(500).json({
-      message: "Something went wrong try again",
-      error,
-    });
-  }
-}
-
-module.exports = { register, login, logout, home, updatePosition };
+module.exports = {
+     register,
+      login, 
+      createToken,
+      logout, 
+      authenticateToken 
+    //   home, 
+    //   updatePosition,
+    };
