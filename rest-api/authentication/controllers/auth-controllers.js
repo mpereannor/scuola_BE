@@ -42,7 +42,7 @@ async function register(req, res) {
     if (found) {
         try{
             const userData = await User.findOne({email})
-            const token = generateAccessToken(password);
+            const token = generateAccessToken({username});
             res.status(201).json({
                 message: `Welcome ${username}`,
                 token,
