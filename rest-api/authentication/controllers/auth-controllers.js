@@ -14,7 +14,8 @@ const register = async (req, res) => {
           username: req.body.username,
           fullname: req.body.fullname,
           email: req.body.email,
-          password: bcrypt.hashSync(req.body.password, 10),
+        //   password: bcrypt.hashSync(req.body.password, 10),
+          password: req.body.password,
       });
   
       if (newUser) {
@@ -53,7 +54,9 @@ const login = async (req, res) => {
 const { username, email, password } = req.body;
 
 try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email  });
+    console.log(user)
+    console.log(bcrypt.compareSync(password, user.password))
     if (user && bcrypt.compareSync(password, user.password)) {
     const token = generateAccessToken(user.id);
     res.status(200).json({
