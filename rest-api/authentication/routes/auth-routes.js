@@ -3,9 +3,6 @@ const router = require("express").Router();
 const {
   register,
   login,
-  createToken,
-  logout,
-  
 //   home,
 //   updatePosition,
 //   authenticateToken
@@ -13,8 +10,8 @@ const {
 
 router.post("/register", register);
 router.post("/login", login);
-router.post("/token", createToken);
-router.delete("/logout", logout)
+// router.post("/token", createToken);
+// router.delete("/logout", logout)
 // router.post("/logout", authUser, logout);
 // router.get("/home", authUser, home);
 // router.patch("/:id/position/", updatePosition);
