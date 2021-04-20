@@ -49,35 +49,35 @@ const register = async (req, res) => {
   };
   
 
-  const login = async (req, res) => {
-    const { email, password } = req.body;
-  
-    try {
-      const user = await User.findOne({ email });
-      if (user && bcrypt.compareSync(password, user.password)) {
-        const token = generateAccessToken(user.id);
-        res.status(200).json({
-          message: `Welcome Back ${user.username}!`,
-          token,
-          user: {
-            id: user.id,
-            username: user.username,
-            fullname: user.fullname,
-            email: user.email,
-          },
-        });
-      } else {
-        res
-          .status(401)
-          .json({ message: 'Email or password is incorrect' });
-      }
-    } catch (error) {
-      res
-        .status(500)
-        .json({ message: `Unable to login ${error.message}` });
+const login = async (req, res) => {
+const { username, email, password } = req.body;
+
+try {
+    const user = await User.findOne({ email });
+    if (user && bcrypt.compareSync(password, user.password)) {
+    const token = generateAccessToken(user.id);
+    res.status(200).json({
+        message: `Welcome Back ${user.username}!`,
+        token,
+        user: {
+        id: user.id,
+        username: user.username,
+        fullname: user.fullname,
+        email: user.email,
+        },
+    });
+    } else {
+    res
+        .status(401)
+        .json({ message: 'Email or password is incorrect' });
     }
-  };
-  
+} catch (error) {
+    res
+    .status(500)
+    .json({ message: `Unable to login ${error.message}` });
+}
+};
+
 
 
 

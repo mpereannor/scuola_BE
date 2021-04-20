@@ -1,35 +1,17 @@
-const Joi = require("@hapi/joi");
-Joi.objectId = require("joi-objectid")(Joi);
-const {
-  BCRYPT_MAX_BYTES,
-  BCRYPT_WORK_FACTOR,
-  PASSWORD_RESET_BYTES,
-} = require("../../../config/keys");
+const bcrypt = require('bcryptjs');
+const User = require('../../user/models/user-models');
 
-const username = Joi.string().min(3).max(128).trim().required();
-const fullname = Joi.string().min(3).max(128).trim().required();
-const email = Joi.string()
-  .email()
-  .min(8)
-  .max(254)
-  .lowercase()
-  .trim()
-  .required();
-const password = Joi.string().min(8).max(128).required();
-const passwordConfirmation = Joi.valid(Joi.ref("password")).required();
+const validatePassword = async (req, res, next) => { 
+    const user = await User.findOne({ email: req.body.email });
+    if ( !user || (user && !bcrypt.compareSync(req.body.password, user.password))){ 
+        res.status(400).json({ 
+            message: `Email or password is incorrect`
+        });
+    } else { 
+        next()
+    }
+};
 
-const registerSchema = Joi.object({
-  username,
-  fullname,
-  email,
-  password,
-  passwordConfirmation,
-});
-
-const loginSchema = Joi.object({
-  username,
-  email,
-  password,
-});
-
-module.exports = { registerSchema, loginSchema };
+module.exports = { 
+    validatePassword
+}

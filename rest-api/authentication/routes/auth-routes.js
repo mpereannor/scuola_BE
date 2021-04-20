@@ -1,5 +1,4 @@
 const router = require("express").Router();
-// const { guest, authUser } = require("../middlewares/auth-middleware");
 const {
   register,
   login,
@@ -8,8 +7,12 @@ const {
 //   authenticateToken
 } = require("../controllers/auth-controllers");
 
+const { validatePassword } = require("../middlewares/auth-validation")
+
 router.post("/register", register);
-router.post("/login", login);
+router.post("/login", 
+// validatePassword,
+ login);
 // router.post("/token", createToken);
 // router.delete("/logout", logout)
 // router.post("/logout", authUser, logout);
