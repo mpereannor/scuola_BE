@@ -83,28 +83,30 @@ async function login(req, res) {
 
     const user = await User.findOne({ email });
 
-    if (user.length === 0) {
-        res.status(401).json({ 
-            message: `Email or password is incorrect`
-        })
-    }
+    // if (user.length === 0) {
+    //     res.status(401).json({ 
+    //         message: `Email or password is incorrect`
+    //     })
+    // }
 
-    if (!user.matchesPassword) {
+    if (user.matchesPassword) {
+        const token = generateAccessToken({username});
+        // const accessToken = generateAccessToken({username});
+        // const refreshToken = generateRefreshToken({username});
+        // refreshTokens.push(refreshToken);
+        res.status(200).json({
+            message: `Welcome back ${user.username}!`,
+            token,
+            user
+        });
+        // res.status(201).json({accessToken,refreshToken});
+    } else{
+
         res.status(401).json({
             message: `Email or password is incorrect`
         })
     }
 
-    const token = generateAccessToken({username});
-    // const accessToken = generateAccessToken({username});
-    // const refreshToken = generateRefreshToken({username});
-    // refreshTokens.push(refreshToken);
-    res.status(200).json({
-        message: `Welcome back ${user.username}!`,
-        token,
-        user
-    });
-    // res.status(201).json({accessToken,refreshToken});
   } catch (error) {
     res.status(500).json({
       message: `Unable to login ${error.message}`,
