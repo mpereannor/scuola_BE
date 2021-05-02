@@ -1,33 +1,19 @@
-const { reject } = require("lodash");
-const { SESSION_NAME } = require("../../../config/session");
-const { BadRequest, Unauthorized } = require("../middlewares/auth-errors");
-
-//helpers
-// const userPosition = { 
-//     ADMIN: 'admin',
-//     TUTOR: 'tutor',
-//     STUDENT: 'student',
-//     GUEST: 'guest'
-// }
+const jwt = require('jsonwebtoken');
 
 
-// const isLoggedIn = (req) => !!req.session.userId;
+const checkAuth = (req, res, next) => { 
+    try {
+        const token = req.headers.authorization;
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        req.decoded = decoded;
+        next();
+    } catch (error) {
+        res.status(401).json({
+            message: `Auth failed`
+        })
+    }
+}
 
-// const isAdmin = (req) => { 
-//     if (req.session.position && req.session.position === userPosition.ADMIN) { 
-//         return true
-//     } 
-// }
-// const isTutor = (req) => { 
-//     if (req.session.position && req.session.position === userPosition.TUTOR) { 
-//         return true
-//     } 
-// }
-// const isStudent = (req) => { 
-//     if (req.session.position && req.session.position === userPosition.STUDENT) { 
-//         return true
-//     } 
-// }
 
 
 
@@ -94,6 +80,7 @@ const { BadRequest, Unauthorized } = require("../middlewares/auth-errors");
 
 
 module.exports = { 
+    checkAuth
     // isLoggedIn, 
     // logIn, 
     // logOut, 

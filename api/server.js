@@ -22,7 +22,7 @@ const dbConnect = require("../config/db");
 //routes import
 // const userRoute = require("../rest-api/user/routes/user-routes");
 const authRoute = require("../rest-api/authentication/routes/auth-routes");
-// const boardRoute = require("../rest-api/board/routes/board-routes");
+const boardRoute = require("../rest-api/board/routes/board-routes");
 // const reportRoute = require("../rest-api/report/routes/report-routes");
 // const updateRoute = require("../rest-api/update/routes/update-routes");
 
@@ -53,7 +53,7 @@ server.use(express.json());
 //routes use
 // server.use("/api/users", userRoute);
 server.use("/api/auth", authRoute);
-// server.use("/api/boards", boardRoute);
+server.use("/api/boards", boardRoute);
 // server.use("/api/reports", reportRoute);
 // server.use("/api/updates", updateRoute);
 

@@ -1,17 +1,5 @@
 const { Board, Issue } = require("../models/board-models");
 const { User } = require("../../user/models/user-models");
-const ObjectId = require("mongoose").Types.ObjectId;
-const {
-  authorize,
-} = require("../../authentication/middlewares/auth-middleware");
-const {
-  Unauthorized,
-  BadRequest,
-  notFound,
-  serverError,
-  created,
-  success,
-} = require("../../globals");
 
 async function createBoard(req, res) {
   try {
@@ -20,20 +8,17 @@ async function createBoard(req, res) {
          summary: 'issue summary',
         status: 'unresolved',
     };
-    const userId = req.session.userId;
+    const userId = req.params.userId;
     const board = await Board.create(req.body);
     await board.groups.push(defaultGroup);
     await board.groups[0].issue.push(defaultIssue);
     const creator = await User.findById(userId);
     board.creator = creator._id;
     await board.save();
-    // const position  = req.session.position;
-    // authorize(req, position);
     res.status(201).json(board);
   } catch (error) {
     res.status(500).json({
-        error,
-      message: "something went wrong creating board, try again later!",
+      message: `unable to create board ${error.message}`
     });
   }
 }
@@ -420,26 +405,26 @@ async function retrieveAssignedUser(req, res) {
 
 module.exports = {
   createBoard,
-  getBoards,
-  getBoard,
-  getBoardByCreator,
-  getBoardsByCreator,
-  updateBoard,
-  archiveBoard,
-  createGroupInBoard,
-  getGroupsInBoard,
-  getGroupInBoard,
-  updateGroupInBoard,
-  archiveGroupInBoard,
-  submitIssue,
-  getIssuesInGroup,
-  getIssueInGroup,
-  updateIssueInGroup,
-  closeIssueInGroup,
-  assignUserToIssue,
-  retrieveAssignedUser,
-  linkReportToBoard,
-  getBoardReports,
-  addUser,
-  getUser,
+  // getBoards,
+  // getBoard,
+  // getBoardByCreator,
+  // getBoardsByCreator,
+  // updateBoard,
+  // archiveBoard,
+  // createGroupInBoard,
+  // getGroupsInBoard,
+  // getGroupInBoard,
+  // updateGroupInBoard,
+  // archiveGroupInBoard,
+  // submitIssue,
+  // getIssuesInGroup,
+  // getIssueInGroup,
+  // updateIssueInGroup,
+  // closeIssueInGroup,
+  // assignUserToIssue,
+  // retrieveAssignedUser,
+  // linkReportToBoard,
+  // getBoardReports,
+  // addUser,
+  // getUser,
 };
