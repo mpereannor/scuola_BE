@@ -14,8 +14,8 @@ const register = async (req, res) => {
           username: req.body.username,
           fullname: req.body.fullname,
           email: req.body.email,
-        //   password: bcrypt.hashSync(req.body.password, 10),
           password: req.body.password,
+          position: req.body.position
       });
   
       if (newUser) {
@@ -32,6 +32,8 @@ const register = async (req, res) => {
               username: fullUserDetails.username,
               fullname: fullUserDetails.fullname,
               email: fullUserDetails.email,
+              position: fullUserDetails.postion,
+              password: fullUserDetails.password
             },
           });
         } catch (error) {
