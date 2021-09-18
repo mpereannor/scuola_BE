@@ -2,7 +2,7 @@ const router = require("express").Router();
 
 const {
   createBoard,
-  // getBoards,
+  getBoards,
   // getBoard,
   // getBoardByCreator,
   // getBoardsByCreator,
@@ -37,9 +37,11 @@ const {
 router.post("/",
 //  checkAuth, 
  createBoard );
-// router.get("/", authUser, getBoards);
+router.get("/:user_id", 
+// authUser,
+ getBoards);
 // router.get("/user_boards", authUser, getBoardsByCreator);
-// router.get("/user_boards/:boardId", authUser, getBoardByCreator);
+// router.get("/userp_boards/:boardId", authUser, getBoardByCreator);
 // router.patch("/:id", updateBoard);
 // router.delete("/:id", archiveBoard);
 // router.patch('/:id/reports/:report_id', linkReportToBoard );

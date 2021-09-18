@@ -32,8 +32,7 @@ async function getUser(req, res) {
     res.status(201).json(user);
   } catch (error) {
     res.status(500).json({
-      message: "something went wrong getting user, try again later!",
-      error: error.message,
+      message: `something went wrong retrieving user,${error.message} try again later!`
     });
   }
 }

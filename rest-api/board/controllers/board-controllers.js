@@ -8,12 +8,12 @@ async function createBoard(req, res) {
          summary: 'issue summary',
         status: 'unresolved',
     };
-    const userId = req.params.userId;
+    // const userId = req.params.userId;
     const board = await Board.create(req.body);
     await board.groups.push(defaultGroup);
     await board.groups[0].issue.push(defaultIssue);
-    const creator = await User.findById(userId);
-    board.creator = creator._id;
+    // const creator = await User.findById(userId);
+    // board.creator = creator._id;
     await board.save();
     res.status(201).json(board);
   } catch (error) {
@@ -26,11 +26,15 @@ async function createBoard(req, res) {
 async function getBoards(req, res) {
     
   try {
-    const boards = await Board.find({});
-    res.status(200).json(boards);
+    const boards = await Board.find()
+    .sort({ dateTime: 1 })
+    .select()
+    .populate('creator')
+    ;
+    res.status(201).json(boards);
   } catch (error) {
     res.status(500).json({
-      message: "something went wrong retrieving boards, try again later!",
+      message: `something went wrong retrieving boards, ${error.message} try again later!`
     });
   }
 }
@@ -405,7 +409,7 @@ async function retrieveAssignedUser(req, res) {
 
 module.exports = {
   createBoard,
-  // getBoards,
+  getBoards,
   // getBoard,
   // getBoardByCreator,
   // getBoardsByCreator,
